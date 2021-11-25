@@ -9,7 +9,7 @@ export const MainArea = styled.div`
   margin: 0 auto;
 `;
 
-export const RmgTitle = styled.div`
+export const PageTitle = styled.div`
   background-color: #f2f7ff;
   display: flex;
   justify-content: center;
@@ -121,14 +121,14 @@ const ArticleContent = styled.div`
   overflow: hidden;
 `;
 
-export const Article = ({ id, src, title, content }) => {
+export const Article = ({ id, src, title, content, clickDelet, clickEdit }) => {
   return (
     <>
       <ArticleBox id={id}>
         <ArticleOption>
           <ArticleOption>
-            <ArticleOptionImg src={cross} />
-            <ArticleOptionImg src={edit} />
+            <ArticleOptionImg src={cross} onClick={clickDelet} />
+            <ArticleOptionImg src={edit} onClick={clickEdit} />
           </ArticleOption>
         </ArticleOption>
         <ArticleImgArea>

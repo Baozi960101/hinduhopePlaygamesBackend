@@ -3,10 +3,17 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthContext } from "../../global/context";
 import { ScrollToTop } from "../../global/Scroll";
 import Login from "../../pages/Login";
-import Article from "../../pages/Article";
-import Edit from "../../pages/Edit";
 import Home from "../../pages/Home";
-import Rmg from "../../pages/Rmg";
+import HomeArticle from "../../pages/edit/HomeArticle";
+import Mobile from "../../pages/edit/Mobile";
+import Esports from "../../pages/edit/Esports";
+import Rmg from "../../pages/edit/Rmg";
+import Card from "../../pages/edit/Card";
+import Raiders from "../../pages/edit/Raiders";
+import Car from "../../pages/edit/Car";
+import Cricket from "../../pages/edit/Cricket";
+import Tennis from "../../pages/edit/Tennis";
+import Badminton from "../../pages/edit/Badminton/Badminton";
 import Search from "../../pages/Search";
 import SiderBar from "../Sidebar";
 import styled from "styled-components";
@@ -39,14 +46,9 @@ export default function App() {
               <Login />
               {/* 針對Login頁做出側邊欄的判斷   目前是以帳號登入為準 */}
             </Route>
-            <Route exact path="/article">
+            <Route exact path="/edithome">
               <MainArea>
-                <Article />
-              </MainArea>
-            </Route>
-            <Route exact path="/edit">
-              <MainArea>
-                <Edit />
+                <HomeArticle />
               </MainArea>
             </Route>
             <Route exact path="/editrmg">
@@ -54,9 +56,44 @@ export default function App() {
                 <Rmg />
               </MainArea>
             </Route>
-            <Route exact path="/search">
+            <Route exact path="/editmobile">
               <MainArea>
-                <Search />
+                <Mobile />
+              </MainArea>
+            </Route>
+            <Route exact path="/editesports">
+              <MainArea>
+                <Esports />
+              </MainArea>
+            </Route>
+            <Route exact path="/editcard">
+              <MainArea>
+                <Card />
+              </MainArea>
+            </Route>
+            <Route exact path="/editraiders">
+              <MainArea>
+                <Raiders />
+              </MainArea>
+            </Route>
+            <Route exact path="/editcar">
+              <MainArea>
+                <Car />
+              </MainArea>
+            </Route>
+            <Route exact path="/editcricket">
+              <MainArea>
+                <Cricket />
+              </MainArea>
+            </Route>
+            <Route exact path="/edittennis">
+              <MainArea>
+                <Tennis />
+              </MainArea>
+            </Route>
+            <Route exact path="/editbadminton">
+              <MainArea>
+                <Badminton />
               </MainArea>
             </Route>
           </Switch>

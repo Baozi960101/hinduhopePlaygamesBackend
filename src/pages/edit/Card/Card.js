@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import {
   MainArea,
   ArticleArea,
-  RmgTitle,
+  PageTitle,
   Rule,
   Article,
   ChangePageButton,
-} from "../../global/editArticle";
-import useHandleArticlePage from "../../global/useHandleArticlePage";
+} from "../../../global/editArticle";
+import useHandleArticle from "../../../global/useHandleArticle";
+import { LoadingBox } from "../../../global/Loading";
 
-const Swal = require("sweetalert2");
 // import { Editor } from "react-draft-wysiwyg";
 // import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 // import { convertFromRaw, EditorState } from "draft-js";
@@ -114,9 +114,15 @@ const data = {
   },
 };
 
-export default function Rmg() {
-  const { FetchDate, post, page, ChangeNextPage, ChangePrevPage } =
-    useHandleArticlePage();
+export default function Card() {
+  const {
+    FetchDate,
+    post,
+    page,
+    ChangeNextPage,
+    ChangePrevPage,
+    deletArticle,
+  } = useHandleArticle();
 
   const [articleData, setArticleData] = useState([]);
 
@@ -126,8 +132,9 @@ export default function Rmg() {
 
   return (
     <>
+      {/* <LoadingBox/> */}
       <MainArea>
-        <RmgTitle>RMG</RmgTitle>
+        <PageTitle>紙牌遊戲</PageTitle>
         <Rule />
         <ArticleArea>
           {articleData.map((data) => {
@@ -138,6 +145,9 @@ export default function Rmg() {
                 src={data.crawler_PicUrl}
                 title={data.crawler_Title}
                 content={data.crawler_Content}
+                clickDelet={() => {
+                  deletArticle(data.crawler_No);
+                }}
               />
             );
           })}

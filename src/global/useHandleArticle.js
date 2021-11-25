@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { ScrollToTop } from "./Scroll";
 
+const Swal = require("sweetalert2");
+
 //此包含引入所有文章以及換頁功能
-export default function useHandleArticlePage() {
+export default function useHandleArticle() {
   const [post, setPost] = useState([]);
   const [page, setPage] = useState(0);
   const [prevPage, setPrevPage] = useState("");
@@ -49,6 +51,23 @@ export default function useHandleArticlePage() {
     ScrollToTop();
   }
 
+  function deletArticle(id) {
+    Swal.fire({
+      title: "確定刪除該篇文章?",
+      text: "此動作無法再回復",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("成功", "已成功刪除該篇文章", "success");
+        console.log("你已刪除該文章" + id);
+      }
+    });
+  }
+
   return {
     FetchDate,
     post,
@@ -63,5 +82,6 @@ export default function useHandleArticlePage() {
     setNowLastPage,
     ChangeNextPage,
     ChangePrevPage,
+    deletArticle,
   };
 }

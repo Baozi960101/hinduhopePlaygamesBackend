@@ -119,9 +119,6 @@ export default function Sidebar() {
             <Logo alt="Play Games" src={playGamesLongLogo} />
           </SidebarLogo>
         </Goto>
-        <Goto to="/article">
-          <ListTitle>文章列表</ListTitle>
-        </Goto>
         <Goto to="/search">
           <ListTitle>查詢文章</ListTitle>
         </Goto>
@@ -132,31 +129,34 @@ export default function Sidebar() {
           編輯文章
           <DownImg src={down} />
         </ListTitle>
+        <Goto to="/edithome">
+          <ListSubTitle $close={editArticle}>首頁</ListSubTitle>
+        </Goto>
         <Goto to="/editrmg">
           <ListSubTitle $close={editArticle}>RMG</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/editmobile">
           <ListSubTitle $close={editArticle}>手機遊戲</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/editesports">
           <ListSubTitle $close={editArticle}>電子競技遊戲</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/editcard">
           <ListSubTitle $close={editArticle}>紙牌遊戲</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/editraiders">
           <ListSubTitle $close={editArticle}>競技攻略</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/editcar">
           <ListSubTitle $close={editArticle}>汽車資訊</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/editcricket">
           <ListSubTitle $close={editArticle}>板球</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/edittennis">
           <ListSubTitle $close={editArticle}>網球</ListSubTitle>
         </Goto>
-        <Goto>
+        <Goto to="/editbadminton">
           <ListSubTitle $close={editArticle}>羽毛球</ListSubTitle>
         </Goto>
         <Goto to="/login">
