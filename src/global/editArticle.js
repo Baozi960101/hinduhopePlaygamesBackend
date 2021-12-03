@@ -3,6 +3,11 @@ import cross from "../images/cross.svg";
 import edit from "../images/edit.svg";
 import leftArrow from "../images/leftArrow.svg";
 import rightArrow from "../images/rightArrow.svg";
+import { Link } from "react-router-dom";
+
+const Goto = styled(Link)`
+  text-decoration: none;
+`;
 
 export const MainArea = styled.div`
   width: 95%;
@@ -30,6 +35,57 @@ const RuleBox = styled.div`
   padding-left: 30px;
   font-weight: 600;
 `;
+
+export const SourseBox = styled.div`
+  display: block;
+
+  ${(props) => props.$switch && `display: none;`}
+`;
+
+export const MyselfBox = styled.div`
+  display: none;
+
+  ${(props) => props.$switch && `display: block;`}
+`;
+
+const TypeTitle = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+`;
+
+const Type = styled.select`
+  margin-left: 10px;
+  margin-right: 20px;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  box-sizing: border-box;
+`;
+
+export const SwitchType = ({ setType }) => {
+  return (
+    <>
+      <TypeTitle>
+        分類 :
+        <Type
+          onChange={(e) => {
+            if (e.target.value === "0") {
+              setType(false);
+            } else {
+              setType(true);
+            }
+          }}
+        >
+          <option value="1">自行創建</option>
+          <option value="0">來源新聞</option>
+        </Type>
+      </TypeTitle>
+    </>
+  );
+};
 
 export const Rule = () => {
   return (
@@ -128,7 +184,6 @@ export const Article = ({ id, src, title, content, clickDelet, clickEdit }) => {
         <ArticleOption>
           <ArticleOption>
             <ArticleOptionImg src={cross} onClick={clickDelet} />
-            <ArticleOptionImg src={edit} onClick={clickEdit} />
           </ArticleOption>
         </ArticleOption>
         <ArticleImgArea>
@@ -136,6 +191,26 @@ export const Article = ({ id, src, title, content, clickDelet, clickEdit }) => {
         </ArticleImgArea>
         <ArticleTitle>{title.substring(0, 30)}</ArticleTitle>
         <ArticleContent>{content.substring(0, 50)}</ArticleContent>
+      </ArticleBox>
+    </>
+  );
+};
+
+export const MyselftArticle = ({ id, content, clickDelet, to }) => {
+  return (
+    <>
+      <ArticleBox id={id}>
+        <ArticleOption>
+          <ArticleOption>
+            <ArticleOptionImg src={cross} onClick={clickDelet} />
+            <Goto to={to}>
+              <ArticleOptionImg src={edit} />
+            </Goto>
+          </ArticleOption>
+        </ArticleOption>
+        <ArticleContent style={{ height: "200px" }}>
+          <div dangerouslySetInnerHTML={{ __html: content }}></div>
+        </ArticleContent>
       </ArticleBox>
     </>
   );

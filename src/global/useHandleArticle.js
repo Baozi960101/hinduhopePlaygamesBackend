@@ -11,6 +11,8 @@ export default function useHandleArticle() {
   const [nextPage, setNextPage] = useState("");
   const [nowLastPage, setNowLastPage] = useState("");
 
+  const [load, setLoad] = useState(false);
+
   async function FetchDate(API) {
     const res = await fetch(API);
     const data = await res.json();
@@ -63,7 +65,6 @@ export default function useHandleArticle() {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("成功", "已成功刪除該篇文章", "success");
-        console.log("你已刪除該文章" + id);
       }
     });
   }

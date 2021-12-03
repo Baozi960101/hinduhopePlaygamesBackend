@@ -129,10 +129,19 @@ export default function Sidebar() {
           編輯文章
           <DownImg src={down} />
         </ListTitle>
-        <Goto to="/edithome">
-          <ListSubTitle $close={editArticle}>首頁</ListSubTitle>
+        {/* <Goto to="/edithome">
+          <ListSubTitle $close={editArticle}>Home</ListSubTitle>
+        </Goto> */}
+        <Goto to="/editgameinformation">
+          <ListSubTitle $close={editArticle}>Game Information</ListSubTitle>
         </Goto>
-        <Goto to="/editrmg">
+        <Goto to="/editvehicles">
+          <ListSubTitle $close={editArticle}>Vehicles</ListSubTitle>
+        </Goto>
+        <Goto to="/editsports">
+          <ListSubTitle $close={editArticle}>Sports</ListSubTitle>
+        </Goto>
+        {/* <Goto to="/editrmg">
           <ListSubTitle $close={editArticle}>RMG</ListSubTitle>
         </Goto>
         <Goto to="/editmobile">
@@ -158,7 +167,7 @@ export default function Sidebar() {
         </Goto>
         <Goto to="/editbadminton">
           <ListSubTitle $close={editArticle}>羽毛球</ListSubTitle>
-        </Goto>
+        </Goto> */}
         <Goto to="/login">
           <ListTitle onClick={loginOut}>登出</ListTitle>
         </Goto>
