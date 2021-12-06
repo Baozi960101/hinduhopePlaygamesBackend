@@ -203,7 +203,27 @@ export const MyselftArticle = ({ id, content, clickDelet, to }) => {
         <ArticleOption>
           <ArticleOption>
             <ArticleOptionImg src={cross} onClick={clickDelet} />
-            <Goto to={to}>
+            <Goto to={`/playgame${to}`}>
+              <ArticleOptionImg src={edit} />
+            </Goto>
+          </ArticleOption>
+        </ArticleOption>
+        <ArticleContent style={{ height: "200px" }}>
+          <div dangerouslySetInnerHTML={{ __html: content }}></div>
+        </ArticleContent>
+      </ArticleBox>
+    </>
+  );
+};
+
+export const HinduMyselftArticle = ({ id, content, clickDelet, to }) => {
+  return (
+    <>
+      <ArticleBox id={id}>
+        <ArticleOption>
+          <ArticleOption>
+            <ArticleOptionImg src={cross} onClick={clickDelet} />
+            <Goto to={`/hinduhope${to}`}>
               <ArticleOptionImg src={edit} />
             </Goto>
           </ArticleOption>
@@ -224,6 +244,7 @@ const PageBox = styled.div`
   margin-top: 40px;
   box-sizing: border-box;
   font-size: 23px;
+  margin-bottom: 40px;
 `;
 
 const PrevButton = styled.img`

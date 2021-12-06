@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import playGamesLongLogo from "../../images/playGamesLongLogo.svg";
+import hinduHopeLongLogo from "../../images/HinduHopeLongLogo.svg";
 import down from "../../images/down.svg";
 import { useState } from "react";
 
@@ -44,8 +45,10 @@ const DownImg = styled.img`
 
 const SidebarLogo = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  height: 150px;
+  height: 170px;
   font-size: 16px;
   font-weight: 600;
   padding-left: 10px;
@@ -55,12 +58,12 @@ const SidebarLogo = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 70%;
+  width: 80%;
   height: auto;
   margin: 0 auto;
 `;
 
-const ListTitle = styled.div`
+const ListMainTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,6 +75,24 @@ const ListTitle = styled.div`
   border-radius: 10px;
   padding: 0 10px 0 20px;
   color: black;
+`;
+
+const ListTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 0px;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 10px;
+  padding: 0 10px 0 30px;
+  color: black;
+  transition: height 0.2s ease-in-out;
+
+  ${(props) => props.$close && `height: 50px;`}
 
   :hover {
     background-color: #f2f7ff;
@@ -89,7 +110,7 @@ const ListSubTitle = styled.div`
   font-weight: 600;
   letter-spacing: 1px;
   border-radius: 10px;
-  padding-left: 40px;
+  padding-left: 60px;
   color: black;
   transition: height 0.3s ease-in-out;
 
@@ -105,10 +126,36 @@ function loginOut() {
 }
 
 export default function Sidebar() {
-  const [editArticle, setEditArticle] = useState(false);
+  const [playGamesItem, setPlayGamesItem] = useState(false);
+  const [hinduHopeItem, setHinduHopeItem] = useState(false);
 
-  function handleEdit() {
-    setEditArticle(!editArticle);
+  const [playEditArticle, setPlayEditArticle] = useState(false);
+  const [hinduEditArticle, setHinduEditArticle] = useState(false);
+
+  function handlePlayItem() {
+    if (playGamesItem) {
+      setPlayGamesItem(false);
+      setPlayEditArticle(false);
+    } else {
+      setPlayGamesItem(true);
+    }
+  }
+
+  function handleHinduItem() {
+    if (hinduHopeItem) {
+      setHinduHopeItem(false);
+      setHinduEditArticle(false);
+    } else {
+      setHinduHopeItem(true);
+    }
+  }
+
+  function handlePlayEdit() {
+    setPlayEditArticle(!playEditArticle);
+  }
+
+  function handleHinduEdit() {
+    setHinduEditArticle(!hinduEditArticle);
   }
 
   return (
@@ -117,59 +164,87 @@ export default function Sidebar() {
         <Goto to="/">
           <SidebarLogo>
             <Logo alt="Play Games" src={playGamesLongLogo} />
+            <Logo alt="Play Games" src={hinduHopeLongLogo} />
           </SidebarLogo>
         </Goto>
-        <Goto to="/search">
+        {/* <Goto to="/search">
           <ListTitle>查詢文章</ListTitle>
+        </Goto> */}
+        <ListMainTitle onClick={handlePlayItem}>
+          Play Games
+          <DownImg src={down} />
+        </ListMainTitle>
+        <Goto to="/playgame/post">
+          <ListTitle $close={playGamesItem}>發表文章</ListTitle>
         </Goto>
-        <Goto to="/post">
-          <ListTitle>發表文章</ListTitle>
-        </Goto>
-        <ListTitle onClick={handleEdit}>
+        <ListTitle $close={playGamesItem} onClick={handlePlayEdit}>
           編輯文章
           <DownImg src={down} />
         </ListTitle>
         {/* <Goto to="/edithome">
-          <ListSubTitle $close={editArticle}>Home</ListSubTitle>
+          <ListSubTitle $close={playEditArticle}>Home</ListSubTitle>
         </Goto> */}
-        <Goto to="/editgameinformation">
-          <ListSubTitle $close={editArticle}>Game Information</ListSubTitle>
+        <Goto to="/playgame/editgameinformation">
+          <ListSubTitle $close={playEditArticle}>Game Information</ListSubTitle>
         </Goto>
-        <Goto to="/editvehicles">
-          <ListSubTitle $close={editArticle}>Vehicles</ListSubTitle>
+        <Goto to="/playgame/editvehicles">
+          <ListSubTitle $close={playEditArticle}>Vehicles</ListSubTitle>
         </Goto>
-        <Goto to="/editsports">
-          <ListSubTitle $close={editArticle}>Sports</ListSubTitle>
+        <Goto to="/playgame/editsports">
+          <ListSubTitle $close={playEditArticle}>Sports</ListSubTitle>
         </Goto>
-        {/* <Goto to="/editrmg">
-          <ListSubTitle $close={editArticle}>RMG</ListSubTitle>
+        {/* <Goto to="/playgame/editrmg">
+          <ListSubTitle $close={playEditArticle}>RMG</ListSubTitle>
         </Goto>
-        <Goto to="/editmobile">
-          <ListSubTitle $close={editArticle}>手機遊戲</ListSubTitle>
+        <Goto to="/playgame/editmobile">
+          <ListSubTitle $close={playEditArticle}>手機遊戲</ListSubTitle>
         </Goto>
-        <Goto to="/editesports">
-          <ListSubTitle $close={editArticle}>電子競技遊戲</ListSubTitle>
+        <Goto to="/playgame/editesports">
+          <ListSubTitle $close={playEditArticle}>電子競技遊戲</ListSubTitle>
         </Goto>
-        <Goto to="/editcard">
-          <ListSubTitle $close={editArticle}>紙牌遊戲</ListSubTitle>
+        <Goto to="/playgame/editcard">
+          <ListSubTitle $close={playEditArticle}>紙牌遊戲</ListSubTitle>
         </Goto>
-        <Goto to="/editraiders">
-          <ListSubTitle $close={editArticle}>競技攻略</ListSubTitle>
+        <Goto to="/playgame/editraiders">
+          <ListSubTitle $close={playEditArticle}>競技攻略</ListSubTitle>
         </Goto>
-        <Goto to="/editcar">
-          <ListSubTitle $close={editArticle}>汽車資訊</ListSubTitle>
+        <Goto to="/playgame/editcar">
+          <ListSubTitle $close={playEditArticle}>汽車資訊</ListSubTitle>
         </Goto>
-        <Goto to="/editcricket">
-          <ListSubTitle $close={editArticle}>板球</ListSubTitle>
+        <Goto to="/playgame/editcricket">
+          <ListSubTitle $close={playEditArticle}>板球</ListSubTitle>
         </Goto>
-        <Goto to="/edittennis">
-          <ListSubTitle $close={editArticle}>網球</ListSubTitle>
+        <Goto to="/playgame/edittennis">
+          <ListSubTitle $close={playEditArticle}>網球</ListSubTitle>
         </Goto>
-        <Goto to="/editbadminton">
-          <ListSubTitle $close={editArticle}>羽毛球</ListSubTitle>
+        <Goto to="/playgame/editbadminton">
+          <ListSubTitle $close={playEditArticle}>羽毛球</ListSubTitle>
         </Goto> */}
+        <ListMainTitle onClick={handleHinduItem}>
+          HinduHope
+          <DownImg src={down} />
+        </ListMainTitle>
+        <Goto to="/hinduhope/post">
+          <ListTitle $close={hinduHopeItem}>發表文章</ListTitle>
+        </Goto>
+        <ListTitle $close={hinduHopeItem} onClick={handleHinduEdit}>
+          編輯文章
+          <DownImg src={down} />
+        </ListTitle>
+        <Goto to="/hinduhope/editboutiques">
+          <ListSubTitle $close={hinduEditArticle}>Boutiques</ListSubTitle>
+        </Goto>
+        <Goto to="/hinduhope/editvehicles">
+          <ListSubTitle $close={hinduEditArticle}>Vehicles</ListSubTitle>
+        </Goto>
+        <Goto to="/hinduhope/editworldnews">
+          <ListSubTitle $close={hinduEditArticle}>World News</ListSubTitle>
+        </Goto>
+        <Goto to="/hinduhope/editfinancialnews">
+          <ListSubTitle $close={hinduEditArticle}>Financial News</ListSubTitle>
+        </Goto>
         <Goto to="/login">
-          <ListTitle onClick={loginOut}>登出</ListTitle>
+          <ListMainTitle onClick={loginOut}>登出</ListMainTitle>
         </Goto>
       </SidebarBox>
     </>

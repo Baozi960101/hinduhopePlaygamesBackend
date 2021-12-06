@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ScrollToTop } from "./Scroll";
+import { scrollToTop } from "./scroll";
+import { playgames, fetchAPIName, hinduhope } from "./API";
 
 const Swal = require("sweetalert2");
 
@@ -14,6 +15,7 @@ export default function useHandleArticle() {
   const [load, setLoad] = useState(false);
 
   async function FetchDate(API) {
+    setLoad(true);
     const res = await fetch(API);
     const data = await res.json();
     setPost(data.data);
@@ -21,6 +23,77 @@ export default function useHandleArticle() {
     setPrevPage(data.links.prev);
     setNextPage(data.links.next);
     setNowLastPage(data.meta.last_page);
+    setLoad(false);
+  }
+
+  async function gameInformationPageArticle() {
+    setLoad(true);
+    const res = await fetch(playgames);
+    const { data } = await res.json();
+    const GameInformation = data.GameInformation.map((item) => {
+      return item.source_Name;
+    });
+    FetchDate(fetchAPIName(GameInformation.join()));
+  }
+
+  async function sportsPageArticle() {
+    setLoad(true);
+    const res = await fetch(playgames);
+    const { data } = await res.json();
+    const Sports = data.Sports.map((item) => {
+      return item.source_Name;
+    });
+    FetchDate(fetchAPIName(Sports.join()));
+  }
+
+  async function vehiclesPageArticle() {
+    setLoad(true);
+    const res = await fetch(playgames);
+    const { data } = await res.json();
+    const Vehicles = data.Vehicles.map((item) => {
+      return item.source_Name;
+    });
+    FetchDate(fetchAPIName(Vehicles.join()));
+  }
+
+  async function boutiquesPageArticle() {
+    setLoad(true);
+    const res = await fetch(hinduhope);
+    const { data } = await res.json();
+    const Boutiques = data.Boutiques.map((item) => {
+      return item.source_Name;
+    });
+    FetchDate(fetchAPIName(Boutiques.join()));
+  }
+
+  async function hinduVehiclesPageArticle() {
+    setLoad(true);
+    const res = await fetch(hinduhope);
+    const { data } = await res.json();
+    const Vehicles = data.Vehicles.map((item) => {
+      return item.source_Name;
+    });
+    FetchDate(fetchAPIName(Vehicles.join()));
+  }
+
+  async function worldNewsPageArticle() {
+    setLoad(true);
+    const res = await fetch(hinduhope);
+    const { data } = await res.json();
+    const WorldNews = data.WorldNews.map((item) => {
+      return item.source_Name;
+    });
+    FetchDate(fetchAPIName(WorldNews.join()));
+  }
+
+  async function financialNewsPageArticle() {
+    setLoad(true);
+    const res = await fetch(hinduhope);
+    const { data } = await res.json();
+    const FinancialNews = data.FinancialNews.map((item) => {
+      return item.source_Name;
+    });
+    FetchDate(fetchAPIName(FinancialNews.join()));
   }
 
   async function ChangePrevPage() {
@@ -35,7 +108,7 @@ export default function useHandleArticle() {
     setPrevPage(data.links.prev);
     setNextPage(data.links.next);
     setNowLastPage(data.meta.last_page);
-    ScrollToTop();
+    scrollToTop();
   }
 
   async function ChangeNextPage() {
@@ -50,7 +123,7 @@ export default function useHandleArticle() {
     setPrevPage(data.links.prev);
     setNextPage(data.links.next);
     setNowLastPage(data.meta.last_page);
-    ScrollToTop();
+    scrollToTop();
   }
 
   function deletArticle(id) {
@@ -84,5 +157,13 @@ export default function useHandleArticle() {
     ChangeNextPage,
     ChangePrevPage,
     deletArticle,
+    load,
+    gameInformationPageArticle,
+    sportsPageArticle,
+    vehiclesPageArticle,
+    boutiquesPageArticle,
+    hinduVehiclesPageArticle,
+    worldNewsPageArticle,
+    financialNewsPageArticle,
   };
 }

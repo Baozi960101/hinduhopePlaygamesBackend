@@ -1,21 +1,43 @@
-const MainURL = "https://argus.work/argus/api/v1";
 const Login_Api = `https://argus.work/argus/api/v1/auth/login`;
 const GetUserData_Api = `https://argus.work/argus/api/v1/auth/user-profile`;
 
-export const TestURL = `${MainURL}/data?key=高雄市&start_date=2021-11-15&end_date=2021-11-15&crawler_Web=chinatimes`;
+const MainApi = "https://api.hinduhope.com/api/v1/data";
 
-export const TestURL02 = `${MainURL}/data?key=台北市&start_date=2021-11-15&end_date=2021-11-15&crawler_Web=chinatimes`;
+export const hinduhope = `https://api.hinduhope.com/api/v1/data/showWeb?groups_Type=hinduhope`;
 
-export function FetchTestAPI() {
-  return fetch(TestURL).then((res) => res.json());
+function getDay(day) {
+  let today = new Date();
+  let day_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+  today.setTime(day_milliseconds);
+
+  let tYear = today.getFullYear();
+  let tMonth = today.getMonth();
+  let tDate = today.getDate();
+  tMonth = doHandleMonth(tMonth + 1);
+  tDate = doHandleMonth(tDate);
+  return tYear + "-" + tMonth + "-" + tDate;
 }
 
-export function FetchTestAPI02() {
-  return fetch(TestURL02).then((res) => res.json());
+function doHandleMonth(month) {
+  let m = month;
+  if (month.toString().length === 1) {
+    m = "0" + month;
+  }
+  return m;
+}
+
+let nowDate = getDay(0);
+let LastNowDate = getDay(-30);
+
+export const playgames =
+  "https://api.hinduhope.com/api/v1/data/showWeb?groups_Type=playgames";
+
+export function fetchAPIName(source) {
+  return `${MainApi}?start_date=${LastNowDate}&end_date=${nowDate}&crawler_Web=${source}`;
 }
 
 export const AloneApi = (id) => {
-  return `${MainURL}/data/${id}`;
+  return `${MainApi}/data/${id}`;
 };
 
 export function LoginApi(account, password) {
