@@ -82,7 +82,7 @@ export default function GameInformation() {
     <>
       {load && <LoadingBox />}
       <MainArea>
-        <PageTitle>GameInformation</PageTitle>
+        <PageTitle>Game Information</PageTitle>
         <SwitchType setType={setType} />
         <MyselfBox $switch={type}>
           <ArticleArea>

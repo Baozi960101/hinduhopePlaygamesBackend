@@ -20,7 +20,7 @@ const Loading = styled.div`
 
 const LoadingTitle = styled.div`
   display: flex;
-  color: #70a7ff;
+  color: #f18b23;
   font-size: 30px;
   font-weight: 600;
   margin-top: 20px;
@@ -31,10 +31,10 @@ export function LoadingBox() {
   return (
     <>
       <Loading>
-        <Loader type="Audio" color="#70A7FF" height={80} width={80} />
+        <Loader type="Audio" color="#f18b23" height={80} width={80} />
         <LoadingTitle>
           Loading
-          <Loader type="ThreeDots" color="#70A7FF" height={10} width={50} />
+          <Loader type="ThreeDots" color="#f18b23" height={10} width={50} />
         </LoadingTitle>
       </Loading>
     </>
