@@ -73,8 +73,8 @@ export default function Boutiques() {
 
   useEffect(() => {
     setMyselfArticleData(myself.data);
-    // scrollToTop();
-    // boutiquesPageArticle();
+    scrollToTop();
+    boutiquesPageArticle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -73,8 +73,8 @@ export default function Vehicles() {
 
   useEffect(() => {
     setMyselfArticleData(myself.data);
-    // scrollToTop()
-    // vehiclesPageArticle()
+    scrollToTop()
+    vehiclesPageArticle()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

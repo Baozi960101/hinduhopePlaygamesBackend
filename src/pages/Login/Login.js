@@ -187,7 +187,7 @@ const LoginRememberBox = styled.div`
   height: 15px;
   border-radius: 3px;
   border: 1px solid black;
-  margin-top: 4px;
+  margin-top: 1px;
   margin-right: 4px;
 `;
 
@@ -232,8 +232,8 @@ function loginClick(account, password, loginGO) {
 }
 
 export default function Login() {
-  let History = useHistory();
-  // const { setUser } = useContext(AuthContext);
+  let history = useHistory();
+  const { setUser } = useContext(AuthContext);
   const [passwordWatch, setPasswordWatch] = useState(true);
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
@@ -273,33 +273,39 @@ export default function Login() {
     }
   }
 
-  async function loginGO() {
-    const res = await LoginApi(account, password);
-    if (res.status === 422) {
-      Swal.fire("帳密錯誤");
-      setload(false);
-      return;
-    } else if (res.status === 401) {
-      Swal.fire("帳密錯誤");
-      setload(false);
-      return;
-    }
-    const data = await res.json();
-    try {
-      if (rememberTick) {
-        SetUserToken(account);
-      }
-      SetAuthToken(data.access_token);
-    } catch (error) {
-      setload(false);
-    }
-    // 設置Token的地方
-    // const checkRes = await FirstCheckUser(data.access_token);
-    // const dataCheck = await checkRes.json();
-    // setUser(dataCheck.data);
-    setload(false);
+  // async function loginGO() {
+  //   const res = await LoginApi(account, password);
+  //   if (res.status === 422) {
+  //     Swal.fire("帳密錯誤");
+  //     setload(false);
+  //     return;
+  //   } else if (res.status === 401) {
+  //     Swal.fire("帳密錯誤");
+  //     setload(false);
+  //     return;
+  //   }
+  //   const data = await res.json();
+  //   try {
+  //     if (rememberTick) {
+  //       SetUserToken(account);
+  //     }
+  //     SetAuthToken(data.access_token);
+  //   } catch (error) {
+  //     setload(false);
+  //   }
+  //   // 設置Token的地方
+  //   // const checkRes = await FirstCheckUser(data.access_token);
+  //   // const dataCheck = await checkRes.json();
+  //   // setUser(dataCheck.data);
+  //   setload(false);
+  //   Swal.fire("登入成功!", "", "success");
+  //   History.push("/");
+  // }
+
+  function loginGO() {
     Swal.fire("登入成功!", "", "success");
-    History.push("/");
+    setUser(true);
+    history.push("/");
   }
 
   return (

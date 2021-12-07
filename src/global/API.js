@@ -1,9 +1,12 @@
-const Login_Api = `https://argus.work/argus/api/v1/auth/login`;
-const GetUserData_Api = `https://argus.work/argus/api/v1/auth/user-profile`;
+const login_Api = `https://argus.work/argus/api/v1/auth/login`;
+const getUserData_Api = `https://argus.work/argus/api/v1/auth/user-profile`;
 
-const MainApi = "https://api.hinduhope.com/api/v1/data";
+const mainApi = "https://api.hinduhope.com/api/v1/data";
 
 export const hinduhope = `https://api.hinduhope.com/api/v1/data/showWeb?groups_Type=hinduhope`;
+
+export const scriptApi =
+  "https://b191-114-47-178-228.ngrok.io/generation/callback";
 
 function getDay(day) {
   let today = new Date();
@@ -33,18 +36,18 @@ export const playgames =
   "https://api.hinduhope.com/api/v1/data/showWeb?groups_Type=playgames";
 
 export function fetchAPIName(source) {
-  return `${MainApi}?start_date=${LastNowDate}&end_date=${nowDate}&crawler_Web=${source}`;
+  return `${mainApi}?start_date=${LastNowDate}&end_date=${nowDate}&crawler_Web=${source}`;
 }
 
 export const AloneApi = (id) => {
-  return `${MainApi}/data/${id}`;
+  return `${mainApi}/data/${id}`;
 };
 
 export function LoginApi(account, password) {
   let data = new FormData();
   data.append("email", account);
   data.append("password", password);
-  return fetch(`${Login_Api}`, {
+  return fetch(`${login_Api}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -54,7 +57,7 @@ export function LoginApi(account, password) {
 }
 
 export const FirstCheckUser = (token) => {
-  return fetch(GetUserData_Api, {
+  return fetch(getUserData_Api, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

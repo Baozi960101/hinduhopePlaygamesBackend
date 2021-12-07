@@ -73,8 +73,8 @@ export default function FinancialNews() {
 
   useEffect(() => {
     setMyselfArticleData(myself.data);
-    // scrollToTop()
-    // financialNewsPageArticle()
+    scrollToTop()
+    financialNewsPageArticle()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import playGamesLongLogo from "../../images/playGamesLongLogo.svg";
 import hinduHopeLongLogo from "../../images/HinduHopeLongLogo.svg";
 import down from "../../images/down.svg";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../global/context";
 
 const Swal = require("sweetalert2");
 
@@ -121,16 +122,19 @@ const ListSubTitle = styled.div`
   }
 `;
 
-function loginOut() {
-  Swal.fire("登出成功");
-}
-
 export default function Sidebar() {
   const [playGamesItem, setPlayGamesItem] = useState(false);
   const [hinduHopeItem, setHinduHopeItem] = useState(false);
 
   const [playEditArticle, setPlayEditArticle] = useState(false);
   const [hinduEditArticle, setHinduEditArticle] = useState(false);
+
+  const { setUser } = useContext(AuthContext);
+
+  function loginOut() {
+    Swal.fire("登出成功");
+    setUser(false);
+  }
 
   function handlePlayItem() {
     if (playGamesItem) {
@@ -242,6 +246,9 @@ export default function Sidebar() {
         </Goto>
         <Goto to="/hinduhope/editfinancialnews">
           <ListSubTitle $close={hinduEditArticle}>Financial News</ListSubTitle>
+        </Goto>
+        <Goto to="/script">
+          <ListMainTitle>自動撰文</ListMainTitle>
         </Goto>
         <Goto to="/login">
           <ListMainTitle onClick={loginOut}>登出</ListMainTitle>

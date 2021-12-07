@@ -6,10 +6,11 @@ import {
   useParams,
   useLocation,
 } from "react-router-dom";
+
 import { AuthContext, SlugContext } from "../../global/context";
 import { scrollToTop } from "../../global/scroll";
 import Login from "../../pages/Login";
-import Home from "../../pages/playGamesAi/Home";
+import Home from "../../pages/Home";
 import HomeArticle from "../../pages/playGamesAi/edit/HomeArticle";
 import Mobile from "../../pages/playGamesAi/edit/Mobile";
 import Esports from "../../pages/playGamesAi/edit/Esports";
@@ -35,6 +36,8 @@ import Boutiques from "../../pages/hinduHope/edit/Boutiques/Boutiques";
 import FinancialNews from "../../pages/hinduHope/edit/FinancialNews/FinancialNews";
 import WorldNews from "../../pages/hinduHope/edit/WorldNews/WorldNews";
 import HinduVehicles from "../../pages/hinduHope/edit/Vehicles/Vehicles";
+
+import Script from "../../pages/Script/script";
 
 const MainArea = styled.div`
   width: 100%;
@@ -158,6 +161,9 @@ export default function App() {
               </Route>
               <Route exact path="/hinduhope/editworldnews">
                 <JudgeUser component={<WorldNews />} />
+              </Route>
+              <Route exact path="/script">
+                <JudgeUser component={<Script />} />
               </Route>
               <Route exact path="/playgame/:slug">
                 <JudgeUser component={<BlogPlayPost />} />

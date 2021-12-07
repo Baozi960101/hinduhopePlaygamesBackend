@@ -73,8 +73,8 @@ export default function Sports() {
 
   useEffect(() => {
     setMyselfArticleData(myself.data);
-    // scrollToTop()
-    // sportsPageArticle()
+    scrollToTop()
+    sportsPageArticle()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

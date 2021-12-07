@@ -73,8 +73,8 @@ export default function GameInformation() {
 
   useEffect(() => {
     setMyselfArticleData(myself.data);
-    // scrollToTop();
-    // gameInformationPageArticle();
+    scrollToTop();
+    gameInformationPageArticle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

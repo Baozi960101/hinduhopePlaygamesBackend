@@ -73,8 +73,8 @@ export default function WorldNews() {
 
   useEffect(() => {
     setMyselfArticleData(myself.data);
-    // scrollToTop();
-    // worldNewsPageArticle();
+    scrollToTop();
+    worldNewsPageArticle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -37,6 +37,7 @@ const ButtonArea = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  margin-bottom: 30px;
 `;
 
 const ContentButton = styled.button`
@@ -200,6 +201,37 @@ export default function Post() {
 
       return (
         <div>
+          <ButtonArea>
+            <ClassificationSelect
+              value={articleClassification}
+              onChange={(e) => {
+                setEditArticleContent(
+                  draftToHtml(convertToRaw(editorState.getCurrentContent()))
+                );
+                setArticleClassification(e.target.value);
+              }}
+            >
+              <option value="">分類</option>
+              <option value="GameInformation">Game Information</option>
+              <option value="Vehicles">Vehicles</option>
+              <option value="Sports">Sports</option>
+            </ClassificationSelect>
+            <ClassificationSelect
+              value={articleAuthor}
+              onChange={(e) => {
+                setEditArticleContent(
+                  draftToHtml(convertToRaw(editorState.getCurrentContent()))
+                );
+                setArticleAuthor(e.target.value);
+              }}
+            >
+              <option value="">作者</option>
+              <option value="使用者01">使用者01</option>
+              <option value="使用者02">使用者02</option>
+              <option value="使用者03">使用者03</option>
+              <option value="使用者04">使用者04</option>
+            </ClassificationSelect>
+          </ButtonArea>
           <Box>
             <Editor
               editorState={editorState}
@@ -245,36 +277,7 @@ export default function Post() {
               }}
             />
           </Box>
-          <ClassificationSelect
-            value={articleClassification}
-            onChange={(e) => {
-              setEditArticleContent(
-                draftToHtml(convertToRaw(editorState.getCurrentContent()))
-              );
-              setArticleClassification(e.target.value);
-            }}
-          >
-            <option value="">分類</option>
-            <option value="GameInformation">Game Information</option>
-            <option value="Vehicles">Vehicles</option>
-            <option value="Sports">Sports</option>
-          </ClassificationSelect>
-          <ButtonArea>
-            <ClassificationSelect
-              value={articleAuthor}
-              onChange={(e) => {
-                setEditArticleContent(
-                  draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                );
-                setArticleAuthor(e.target.value);
-              }}
-            >
-              <option value="">作者</option>
-              <option value="01">01</option>
-              <option value="02">02</option>
-              <option value="03">03</option>
-              <option value="04">04</option>
-            </ClassificationSelect>
+          <ButtonArea style={{ justifyContent: "flex-end" }}>
             <ContentButton
               onClick={() => {
                 judgeArticle(editorState);
