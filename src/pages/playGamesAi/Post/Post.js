@@ -113,6 +113,7 @@ class Media extends Component {
   }
 }
 
+
 export default function Post() {
   const [editArticleContent, setEditArticleContent] = useState("");
 
@@ -286,7 +287,9 @@ export default function Post() {
     }
   }
 
-  console.log(tg);
+ const [ img ,setImg ] = useState("")
+
+ 
 
   return (
     <>
@@ -296,6 +299,10 @@ export default function Post() {
         <EditTiele>請輸入標題 :</EditTiele>
         <EditTieleInput />
         <EditTiele>請放入圖片 :</EditTiele>
+        
+
+        <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png" multiple />
+
         <EditTiele>請輸入內文 :</EditTiele>
         <EditorConvertToHTML />
 
