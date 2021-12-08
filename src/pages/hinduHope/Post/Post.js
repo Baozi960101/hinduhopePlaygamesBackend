@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useEffect } from "react";
 import styled from "styled-components";
 import { MainArea, PageTitle } from "../../../global/editArticle";
 import useHandleArticle from "../../../global/useHandleArticle";
@@ -83,6 +83,148 @@ class Media extends Component {
   }
 }
 
+const EditorConvertToHTML = ({ html }) => {
+  const [editorState, setEditorState] = useState(); // undefined
+
+  useEffect(() => {
+    const contentBlock = htmlToDraft(html);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      setEditorState(EditorState.createWithContent(contentState));
+    }
+  }, [html]);
+
+  function onEditorStateChange(value) {
+    setEditorState(value);
+  }
+
+  const imageUploadCallBack = (file) =>
+    new Promise((resolve, reject) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      let img = new Image();
+      // let url = ''
+      reader.onload = function (e) {
+        img.src = this.result;
+      };
+      img.onload = function () {
+        // console.log(img.src.length)
+        // 缩放图片需要的canvas（也可以在DOM中直接定义canvas标签，这样就能把压缩完的图片不转base64也能直接显示出来）
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+
+        // 图片原始尺寸
+        var originWidth = this.width;
+        var originHeight = this.height;
+
+        // 最大尺寸限制，可通过设置宽高来实现图片压缩程度
+        var maxWidth = 400,
+          maxHeight = 500;
+        // 目标尺寸
+        var targetWidth = originWidth,
+          targetHeight = originHeight;
+        // 图片尺寸超过300x300的限制
+        if (originWidth > maxWidth || originHeight > maxHeight) {
+          if (originWidth / originHeight > maxWidth / maxHeight) {
+            // 更宽，按照宽度限定尺寸
+            targetWidth = maxWidth;
+            targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+          } else {
+            targetHeight = maxHeight;
+            targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+          }
+        }
+        // canvas对图片进行缩放
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        // 清除画布
+        context.clearRect(0, 0, targetWidth, targetHeight);
+        // 图片压缩
+        context.drawImage(img, 0, 0, targetWidth, targetHeight);
+        /*第一个参数是创建的img对象；第二三个参数是左上角坐标，后面两个是画布区域宽高*/
+
+        //压缩后的图片转base64 url
+        /*canvas.toDataURL(mimeType, qualityArgument),mimeType 默认值是'image/png';
+         * qualityArgument表示导出的图片质量，只有导出为jpeg和webp格式的时候此参数才有效，默认值是0.92*/
+        var newUrl = canvas.toDataURL("image/jpeg", 0.92); //base64 格式
+        // console.log(newUrl.length)
+
+        resolve({
+          data: {
+            link: newUrl,
+          },
+        });
+
+        //也可以把压缩后的图片转blob格式用于上传
+        // canvas.toBlob((blob)=>{
+        //     console.log(blob)
+        //     //把blob作为参数传给后端
+        // }, 'image/jpeg', 0.92)
+      };
+    });
+
+  return (
+    <div>
+      <Box>
+        <Editor
+          editorState={editorState}
+          wrapperClassName="demo-wrapper"
+          editorClassName="demo-editor"
+          onEditorStateChange={onEditorStateChange}
+          customBlockRenderFunc={myBlockRenderer}
+          toolbar={{
+            options: [
+              "inline",
+              "blockType",
+              "fontSize",
+              "image",
+              "emoji",
+              "colorPicker",
+              "fontFamily",
+              "textAlign",
+              "history",
+              "link",
+              "list",
+            ],
+            inline: {
+              options: ["bold", "italic", "underline"],
+              bold: { className: "demo-option-custom" },
+              italic: { className: "demo-option-custom" },
+              underline: { className: "demo-option-custom" },
+              strikethrough: { className: "demo-option-custom" },
+              monospace: { className: "demo-option-custom" },
+              superscript: { className: "demo-option-custom" },
+              subscript: { className: "demo-option-custom" },
+            },
+            blockType: {
+              className: "demo-option-custom-wide",
+              dropdownClassName: "demo-dropdown-custom",
+            },
+            fontSize: { className: "demo-option-custom-medium" },
+            image: {
+              urlEnabled: true,
+              uploadEnabled: true,
+              alignmentEnabled: true, // 是否显示排列按钮 相当于text-align
+              uploadCallback: imageUploadCallBack,
+              previewImage: true,
+              inputAccept: "image/*",
+              alt: { present: false, mandatory: false, previewImage: true },
+            },
+          }}
+        />
+        {editorState && (
+          <textarea
+            disabled
+            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+          />
+        )}
+      </Box>
+    </div>
+  );
+};
+
 export default function Post() {
   const [editArticleContent, setEditArticleContent] = useState("");
 
@@ -105,200 +247,199 @@ export default function Post() {
     );
   }
 
-  class EditorConvertToHTML extends Component {
-    constructor(props) {
-      super(props);
-      const html = editArticleContent;
-      const contentBlock = htmlToDraft(html);
-      if (contentBlock) {
-        const contentState = ContentState.createFromBlockArray(
-          contentBlock.contentBlocks
-        );
-        const editorState = EditorState.createWithContent(contentState);
-        this.state = {
-          editorState,
-        };
-      }
-    }
+  // class EditorConvertToHTML extends Component {
+  //   constructor(props) {
+  //     super(props);
+  //     const html = editArticleContent;
+  //     const contentBlock = htmlToDraft(html);
+  //     if (contentBlock) {
+  //       const contentState = ContentState.createFromBlockArray(
+  //         contentBlock.contentBlocks
+  //       );
+  //       const editorState = EditorState.createWithContent(contentState);
+  //       this.state = {
+  //         editorState,
+  //       };
+  //     }
+  //   }
 
-    onEditorStateChange = (editorState) => {
-      this.setState({
-        editorState,
-      });
-    };
-    
+  //   onEditorStateChange = (editorState) => {
+  //     this.setState({
+  //       editorState,
+  //     });
+  //   };
 
-    imageUploadCallBack = (file) =>
-      new Promise((resolve, reject) => {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        let img = new Image();
-        // let url = ''
-        reader.onload = function (e) {
-          img.src = this.result;
-        };
-        img.onload = function () {
-          // console.log(img.src.length)
-          // 缩放图片需要的canvas（也可以在DOM中直接定义canvas标签，这样就能把压缩完的图片不转base64也能直接显示出来）
-          var canvas = document.createElement("canvas");
-          var context = canvas.getContext("2d");
+  //   imageUploadCallBack = (file) =>
+  //     new Promise((resolve, reject) => {
+  //       var reader = new FileReader();
+  //       reader.readAsDataURL(file);
+  //       let img = new Image();
+  //       // let url = ''
+  //       reader.onload = function (e) {
+  //         img.src = this.result;
+  //       };
+  //       img.onload = function () {
+  //         // console.log(img.src.length)
+  //         // 缩放图片需要的canvas（也可以在DOM中直接定义canvas标签，这样就能把压缩完的图片不转base64也能直接显示出来）
+  //         var canvas = document.createElement("canvas");
+  //         var context = canvas.getContext("2d");
 
-          // 图片原始尺寸
-          var originWidth = this.width;
-          var originHeight = this.height;
+  //         // 图片原始尺寸
+  //         var originWidth = this.width;
+  //         var originHeight = this.height;
 
-          // 最大尺寸限制，可通过设置宽高来实现图片压缩程度
-          var maxWidth = 400,
-            maxHeight = 500;
-          // 目标尺寸
-          var targetWidth = originWidth,
-            targetHeight = originHeight;
-          // 图片尺寸超过300x300的限制
-          if (originWidth > maxWidth || originHeight > maxHeight) {
-            if (originWidth / originHeight > maxWidth / maxHeight) {
-              // 更宽，按照宽度限定尺寸
-              targetWidth = maxWidth;
-              targetHeight = Math.round(
-                maxWidth * (originHeight / originWidth)
-              );
-            } else {
-              targetHeight = maxHeight;
-              targetWidth = Math.round(
-                maxHeight * (originWidth / originHeight)
-              );
-            }
-          }
-          // canvas对图片进行缩放
-          canvas.width = targetWidth;
-          canvas.height = targetHeight;
-          // 清除画布
-          context.clearRect(0, 0, targetWidth, targetHeight);
-          // 图片压缩
-          context.drawImage(img, 0, 0, targetWidth, targetHeight);
-          /*第一个参数是创建的img对象；第二三个参数是左上角坐标，后面两个是画布区域宽高*/
+  //         // 最大尺寸限制，可通过设置宽高来实现图片压缩程度
+  //         var maxWidth = 400,
+  //           maxHeight = 500;
+  //         // 目标尺寸
+  //         var targetWidth = originWidth,
+  //           targetHeight = originHeight;
+  //         // 图片尺寸超过300x300的限制
+  //         if (originWidth > maxWidth || originHeight > maxHeight) {
+  //           if (originWidth / originHeight > maxWidth / maxHeight) {
+  //             // 更宽，按照宽度限定尺寸
+  //             targetWidth = maxWidth;
+  //             targetHeight = Math.round(
+  //               maxWidth * (originHeight / originWidth)
+  //             );
+  //           } else {
+  //             targetHeight = maxHeight;
+  //             targetWidth = Math.round(
+  //               maxHeight * (originWidth / originHeight)
+  //             );
+  //           }
+  //         }
+  //         // canvas对图片进行缩放
+  //         canvas.width = targetWidth;
+  //         canvas.height = targetHeight;
+  //         // 清除画布
+  //         context.clearRect(0, 0, targetWidth, targetHeight);
+  //         // 图片压缩
+  //         context.drawImage(img, 0, 0, targetWidth, targetHeight);
+  //         /*第一个参数是创建的img对象；第二三个参数是左上角坐标，后面两个是画布区域宽高*/
 
-          //压缩后的图片转base64 url
-          /*canvas.toDataURL(mimeType, qualityArgument),mimeType 默认值是'image/png';
-           * qualityArgument表示导出的图片质量，只有导出为jpeg和webp格式的时候此参数才有效，默认值是0.92*/
-          var newUrl = canvas.toDataURL("image/jpeg", 0.92); //base64 格式
-          // console.log(newUrl.length)
+  //         //压缩后的图片转base64 url
+  //         /*canvas.toDataURL(mimeType, qualityArgument),mimeType 默认值是'image/png';
+  //          * qualityArgument表示导出的图片质量，只有导出为jpeg和webp格式的时候此参数才有效，默认值是0.92*/
+  //         var newUrl = canvas.toDataURL("image/jpeg", 0.92); //base64 格式
+  //         // console.log(newUrl.length)
 
-          resolve({
-            data: {
-              link: newUrl,
-            },
-          });
+  //         resolve({
+  //           data: {
+  //             link: newUrl,
+  //           },
+  //         });
 
-          //也可以把压缩后的图片转blob格式用于上传
-          // canvas.toBlob((blob)=>{
-          //     console.log(blob)
-          //     //把blob作为参数传给后端
-          // }, 'image/jpeg', 0.92)
-        };
-      });
+  //         //也可以把压缩后的图片转blob格式用于上传
+  //         // canvas.toBlob((blob)=>{
+  //         //     console.log(blob)
+  //         //     //把blob作为参数传给后端
+  //         // }, 'image/jpeg', 0.92)
+  //       };
+  //     });
 
-    render() {
-      const { editorState } = this.state;
+  //   render() {
+  //     const { editorState } = this.state;
 
-      return (
-        <div>
-          <ButtonArea>
-            <ClassificationSelect
-              value={articleClassification}
-              onChange={(e) => {
-                setEditArticleContent(
-                  draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                );
-                setArticleClassification(e.target.value);
-              }}
-            >
-              <option value="">分類</option>
-              <option value="Boutiques">Boutiques</option>
-              <option value="Vehicles">Vehicles</option>
-              <option value="WorldNews">World News</option>
-              <option value="FinancialNews">Financial News</option>
-            </ClassificationSelect>
-            <ClassificationSelect
-              value={articleAuthor}
-              onChange={(e) => {
-                setEditArticleContent(
-                  draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                );
-                setArticleAuthor(e.target.value);
-              }}
-            >
-              <option value="">作者</option>
-              <option value="使用者01">使用者01</option>
-              <option value="使用者02">使用者02</option>
-              <option value="使用者03">使用者03</option>
-              <option value="使用者04">使用者04</option>
-            </ClassificationSelect>
-          </ButtonArea>
-          <Box>
-            <Editor
-              editorState={editorState}
-              wrapperClassName="demo-wrapper"
-              editorClassName="demo-editor"
-              onEditorStateChange={this.onEditorStateChange}
-              customBlockRenderFunc={myBlockRenderer}
-              toolbar={{
-                options: [
-                  "inline",
-                  "blockType",
-                  "fontSize",
-                  "textAlign",
-                  "history",
-                  "colorPicker",
-                  "image",
-                  "link",
-                ],
-                inline: {
-                  options: ["italic"],
-                  bold: { className: "demo-option-custom" },
-                  italic: { className: "demo-option-custom" },
-                  underline: { className: "demo-option-custom" },
-                  strikethrough: { className: "demo-option-custom" },
-                  monospace: { className: "demo-option-custom" },
-                  superscript: { className: "demo-option-custom" },
-                  subscript: { className: "demo-option-custom" },
-                },
-                blockType: {
-                  className: "demo-option-custom-wide",
-                  dropdownClassName: "demo-dropdown-custom",
-                },
-                fontSize: { className: "demo-option-custom-medium" },
-                image: {
-                  urlEnabled: true,
-                  uploadEnabled: true,
-                  alignmentEnabled: true, // 是否显示排列按钮 相当于text-align
-                  uploadCallback: this.imageUploadCallBack,
-                  previewImage: true,
-                  inputAccept: "image/*",
-                  alt: { present: false, mandatory: false, previewImage: true },
-                },
-              }}
-            />
-          </Box>
-          <ButtonArea style={{ justifyContent: "flex-end" }}>
-            <ContentButton
-              onClick={() => {
-                judgeArticle(editorState);
-              }}
-            >
-              修改完成
-            </ContentButton>
-          </ButtonArea>
-        </div>
-      );
-    }
-  }
+  //     return (
+  //       <div>
+  //         <ButtonArea>
+  //           <ClassificationSelect
+  //             value={articleClassification}
+  //             onChange={(e) => {
+  //               setEditArticleContent(
+  //                 draftToHtml(convertToRaw(editorState.getCurrentContent()))
+  //               );
+  //               setArticleClassification(e.target.value);
+  //             }}
+  //           >
+  //             <option value="">分類</option>
+  //             <option value="Boutiques">Boutiques</option>
+  //             <option value="Vehicles">Vehicles</option>
+  //             <option value="WorldNews">World News</option>
+  //             <option value="FinancialNews">Financial News</option>
+  //           </ClassificationSelect>
+  //           <ClassificationSelect
+  //             value={articleAuthor}
+  //             onChange={(e) => {
+  //               setEditArticleContent(
+  //                 draftToHtml(convertToRaw(editorState.getCurrentContent()))
+  //               );
+  //               setArticleAuthor(e.target.value);
+  //             }}
+  //           >
+  //             <option value="">作者</option>
+  //             <option value="使用者01">使用者01</option>
+  //             <option value="使用者02">使用者02</option>
+  //             <option value="使用者03">使用者03</option>
+  //             <option value="使用者04">使用者04</option>
+  //           </ClassificationSelect>
+  //         </ButtonArea>
+  //         <Box>
+  //           <Editor
+  //             editorState={editorState}
+  //             wrapperClassName="demo-wrapper"
+  //             editorClassName="demo-editor"
+  //             onEditorStateChange={this.onEditorStateChange}
+  //             customBlockRenderFunc={myBlockRenderer}
+  //             toolbar={{
+  //               options: [
+  //                 "inline",
+  //                 "blockType",
+  //                 "fontSize",
+  //                 "textAlign",
+  //                 "history",
+  //                 "colorPicker",
+  //                 "image",
+  //                 "link",
+  //               ],
+  //               inline: {
+  //                 options: ["italic"],
+  //                 bold: { className: "demo-option-custom" },
+  //                 italic: { className: "demo-option-custom" },
+  //                 underline: { className: "demo-option-custom" },
+  //                 strikethrough: { className: "demo-option-custom" },
+  //                 monospace: { className: "demo-option-custom" },
+  //                 superscript: { className: "demo-option-custom" },
+  //                 subscript: { className: "demo-option-custom" },
+  //               },
+  //               blockType: {
+  //                 className: "demo-option-custom-wide",
+  //                 dropdownClassName: "demo-dropdown-custom",
+  //               },
+  //               fontSize: { className: "demo-option-custom-medium" },
+  //               image: {
+  //                 urlEnabled: true,
+  //                 uploadEnabled: true,
+  //                 alignmentEnabled: true, // 是否显示排列按钮 相当于text-align
+  //                 uploadCallback: this.imageUploadCallBack,
+  //                 previewImage: true,
+  //                 inputAccept: "image/*",
+  //                 alt: { present: false, mandatory: false, previewImage: true },
+  //               },
+  //             }}
+  //           />
+  //         </Box>
+  //         <ButtonArea style={{ justifyContent: "flex-end" }}>
+  //           <ContentButton
+  //             onClick={() => {
+  //               judgeArticle(editorState);
+  //             }}
+  //           >
+  //             修改完成
+  //           </ContentButton>
+  //         </ButtonArea>
+  //       </div>
+  //     );
+  //   }
+  // }
 
   return (
     <>
       {/* <LoadingBox/> */}
       <MainArea>
         <PageTitle>編輯文章</PageTitle>
-        <EditorConvertToHTML />
+        <EditorConvertToHTML html={editArticleContent} />
       </MainArea>
     </>
   );
