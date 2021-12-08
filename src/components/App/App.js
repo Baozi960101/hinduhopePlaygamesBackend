@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import { AuthContext, SlugContext } from "../../global/context";
-import { scrollToTop } from "../../global/scroll";
+import { scrollToTop } from "../../global/Scroll";
 import Login from "../../pages/Login";
 import Home from "../../pages/Home";
 import HomeArticle from "../../pages/playGamesAi/edit/HomeArticle";

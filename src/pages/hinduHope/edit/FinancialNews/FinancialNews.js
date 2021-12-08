@@ -12,7 +12,7 @@ import {
 } from "../../../../global/editArticle";
 import useHandleArticle from "../../../../global/useHandleArticle";
 import { LoadingBox } from "../../../../global/Loading";
-import { scrollToTop } from "../../../../global/scroll";
+import { scrollToTop } from "../../../../global/Scroll";
 import styled from "styled-components";
 
 const myself = {

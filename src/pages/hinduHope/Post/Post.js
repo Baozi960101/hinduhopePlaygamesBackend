@@ -126,6 +126,7 @@ export default function Post() {
         editorState,
       });
     };
+    
 
     imageUploadCallBack = (file) =>
       new Promise((resolve, reject) => {
