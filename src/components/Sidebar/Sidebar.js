@@ -198,7 +198,7 @@ export default function Sidebar() {
           <ListSubTitle $close={playEditArticle}>Sports</ListSubTitle>
         </Goto>
         {/* <Goto to="/playgame/editrmg">
-          <ListSubTitle $close={playEditArticle}>RMG</ListSubTitle>
+          <ListSubTitle $close={playEditArticle}>RMG</ListSubTitle> 
         </Goto>
         <Goto to="/playgame/editmobile">
           <ListSubTitle $close={playEditArticle}>手機遊戲</ListSubTitle>

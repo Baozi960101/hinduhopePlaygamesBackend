@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { MainArea, PageTitle } from "../../../global/editArticle";
 import useHandleArticle from "../../../global/useHandleArticle";
 import { LoadingBox } from "../../../global/Loading";
+import { getDay } from "../../../global/API";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -86,13 +87,29 @@ const myBlockRenderer = (contentBlock) => {
   }
 };
 
-const EditTiele = styled.h2``;
+const EditTitle = styled.h2``;
 
-const EditTieleInput = styled.input`
+const EditTitleInput = styled.input`
   width: 100%;
   height: 50px;
   font-size: 24px;
   font-size: bold;
+`;
+
+const PreviewImgArea = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 500px;
+  height: 350px;
+  border: 1px solid black;
+  box-sizing: border-box;
+  margin: 30px 0;
+`;
+
+const PreviewImg = styled.img`
+  width: 100%;
 `;
 
 class Media extends Component {
@@ -113,12 +130,7 @@ class Media extends Component {
   }
 }
 
-const EditorConvertToHTML = ({
-  html,
-  editorState,
-  setEditorState,
-  setEditArticleContent,
-}) => {
+const EditorConvertToHTML = ({ html, editorState, setEditorState }) => {
   useEffect(() => {
     const contentBlock = htmlToDraft(html);
     if (contentBlock) {
@@ -199,66 +211,60 @@ const EditorConvertToHTML = ({
     });
 
   return (
-    <div>
-      <Box>
-        <Editor
-          editorState={editorState}
-          wrapperClassName="demo-wrapper"
-          editorClassName="demo-editor"
-          onEditorStateChange={onEditorStateChange}
-          customBlockRenderFunc={myBlockRenderer}
-          toolbar={{
-            options: [
-              "inline",
-              "blockType",
-              "fontSize",
-              "image",
-              "emoji",
-              "colorPicker",
-              "fontFamily",
-              "textAlign",
-              "history",
-              "link",
-              "list",
-            ],
-            inline: {
-              options: ["bold", "italic", "underline"],
-              bold: { className: "demo-option-custom" },
-              italic: { className: "demo-option-custom" },
-              underline: { className: "demo-option-custom" },
-              strikethrough: { className: "demo-option-custom" },
-              monospace: { className: "demo-option-custom" },
-              superscript: { className: "demo-option-custom" },
-              subscript: { className: "demo-option-custom" },
-            },
-            blockType: {
-              className: "demo-option-custom-wide",
-              dropdownClassName: "demo-dropdown-custom",
-            },
-            fontSize: { className: "demo-option-custom-medium" },
-            image: {
-              urlEnabled: true,
-              uploadEnabled: true,
-              alignmentEnabled: true, // 是否显示排列按钮 相当于text-align
-              uploadCallback: imageUploadCallBack,
-              previewImage: true,
-              inputAccept: "image/*",
-              alt: { present: false, mandatory: false, previewImage: true },
-            },
-          }}
-        />
-        {editorState && (
-          <textarea
-            disabled
-            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-          />
-        )}
-      </Box>
-    </div>
+    <Box>
+      <Editor
+        editorState={editorState}
+        wrapperClassName="demo-wrapper"
+        editorClassName="demo-editor"
+        onEditorStateChange={onEditorStateChange}
+        customBlockRenderFunc={myBlockRenderer}
+        toolbar={{
+          options: [
+            "inline",
+            "blockType",
+            "fontSize",
+            "image",
+            "emoji",
+            "colorPicker",
+            "fontFamily",
+            "textAlign",
+            "history",
+            "link",
+            "list",
+          ],
+          inline: {
+            options: ["bold", "italic", "underline"],
+            bold: { className: "demo-option-custom" },
+            italic: { className: "demo-option-custom" },
+            underline: { className: "demo-option-custom" },
+            strikethrough: { className: "demo-option-custom" },
+            monospace: { className: "demo-option-custom" },
+            superscript: { className: "demo-option-custom" },
+            subscript: { className: "demo-option-custom" },
+          },
+          blockType: {
+            className: "demo-option-custom-wide",
+            dropdownClassName: "demo-dropdown-custom",
+          },
+          fontSize: { className: "demo-option-custom-medium" },
+          image: {
+            urlEnabled: true,
+            uploadEnabled: true,
+            alignmentEnabled: true, // 是否显示排列按钮 相当于text-align
+            uploadCallback: imageUploadCallBack,
+            previewImage: true,
+            inputAccept: "image/*",
+            alt: { present: false, mandatory: false, previewImage: true },
+          },
+        }}
+      />
+    </Box>
   );
 };
 
 export default function Post() {
+  const [articleTitle, setArticleTitle] = useState(); // undefined
+
   const [editorState, setEditorState] = useState(); // undefined
 
   const [editArticleContent, setEditArticleContent] = useState("");
@@ -280,33 +286,49 @@ export default function Post() {
     setSelectedImage();
   };
 
+  function handleTitle(e) {
+    setArticleTitle(e.target.value);
+  }
+
   useEffect(() => {
     if (editorState === undefined) {
       return;
     }
   }, [editorState]);
 
+  useEffect(() => {
+    window.onbeforeunload = function (e) {
+      (e || window.event).returnValue = "";
+    };
+    //防止網頁刷新
+  }, []);
+
   return (
     <>
       {/* <LoadingBox/> */}
       <MainArea>
         <PageTitle>編輯文章</PageTitle>
-        <EditTiele>請輸入標題 :</EditTiele>
-        <EditTieleInput />
-        <EditTiele>請放入圖片 :</EditTiele>
+        <EditTitle>請輸入標題 :</EditTitle>
+        <EditTitleInput value={articleTitle} onChange={handleTitle} />
+        <EditTitle>請放入圖片 :</EditTitle>
         <input
           accept="image/gif,image/jpeg,image/jpg,image/png"
           type="file"
           onChange={imageChange}
         />
         {selectedImage && (
-          <div>
-            <img src={URL.createObjectURL(selectedImage)} alt="Thumb" />
-            <button onClick={removeSelectedImage}>Remove This Image</button>
-          </div>
+          <>
+            <PreviewImgArea>
+              <PreviewImg
+                src={URL.createObjectURL(selectedImage)}
+                alt="Thumb"
+              />
+            </PreviewImgArea>
+            <button onClick={removeSelectedImage}>刪除該照片</button>
+          </>
         )}
 
-        <EditTiele>請輸入內文 :</EditTiele>
+        <EditTitle>請輸入內文 :</EditTitle>
         <EditorConvertToHTML
           html={editArticleContent}
           editorState={editorState}
@@ -316,7 +338,7 @@ export default function Post() {
 
         <ButtonArea>
           <div>
-            <EditTiele>請輸入分類 :</EditTiele>
+            <EditTitle>請輸入分類 :</EditTitle>
             <ClassificationSelect
               value={articleClassification}
               onChange={(e) => {
@@ -330,7 +352,7 @@ export default function Post() {
             </ClassificationSelect>
           </div>
           <div>
-            <EditTiele>請輸入作者 :</EditTiele>
+            <EditTitle>請輸入作者 :</EditTitle>
             <ClassificationSelect
               value={articleAuthor}
               onChange={(e) => {
@@ -349,7 +371,18 @@ export default function Post() {
           <ContentButton
             onClick={() => {
               console.log(
-                draftToHtml(convertToRaw(editorState.getCurrentContent()))
+                "標題",
+                articleTitle,
+                "封面",
+                selectedImage,
+                "內文",
+                draftToHtml(convertToRaw(editorState.getCurrentContent())),
+                "分類",
+                articleClassification,
+                "作者",
+                articleAuthor,
+                "日期",
+                getDay(0)
               );
             }}
           >

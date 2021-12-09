@@ -8,7 +8,7 @@ export const hinduhope = `https://api.hinduhope.com/api/v1/data/showWeb?groups_T
 export const scriptApi =
   "https://b191-114-47-178-228.ngrok.io/generation/callback";
 
-function getDay(day) {
+export function getDay(day) {
   let today = new Date();
   let day_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
   today.setTime(day_milliseconds);

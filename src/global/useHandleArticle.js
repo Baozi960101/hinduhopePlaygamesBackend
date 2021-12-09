@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { scrollToTop } from "./Scroll";
+import { scrollToTop } from "./scroll";
 import { playgames, fetchAPIName, hinduhope } from "./API";
 
 const Swal = require("sweetalert2");

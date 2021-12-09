@@ -232,21 +232,6 @@ export default function Post() {
 
   const [articleAuthor, setArticleAuthor] = useState("");
 
-  function judgeArticle(editorState) {
-    if (articleClassification === "" || articleAuthor === "") {
-      alert("作者跟分類請填完整");
-      return;
-    }
-    console.log(
-      draftToHtml(convertToRaw(editorState.getCurrentContent())),
-      articleClassification,
-      articleAuthor
-    );
-    setEditArticleContent(
-      draftToHtml(convertToRaw(editorState.getCurrentContent()))
-    );
-  }
-
   // class EditorConvertToHTML extends Component {
   //   constructor(props) {
   //     super(props);
