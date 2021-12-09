@@ -58,7 +58,7 @@ const TypeTitle = styled.div`
 const Type = styled.select`
   margin-left: 10px;
   margin-right: 20px;
-  width: 100px;
+  width: 150px;
   height: 30px;
   font-size: 16px;
   font-weight: 600;
@@ -72,15 +72,13 @@ export const SwitchType = ({ setType }) => {
         分類 :
         <Type
           onChange={(e) => {
-            if (e.target.value === "0") {
-              setType(false);
-            } else {
-              setType(true);
-            }
+            setType(e.target.value);
           }}
         >
-          <option value="1">自行創建</option>
-          <option value="0">來源新聞</option>
+          <option value="myself">自行創建</option>
+          <option value="GameInformation">Game Information</option>
+          <option value="Vehicles">Vehicles</option>
+          <option value="Sports">Sports</option>
         </Type>
       </TypeTitle>
     </>
@@ -196,7 +194,7 @@ export const Article = ({ id, src, title, content, clickDelet, clickEdit }) => {
   );
 };
 
-export const MyselftArticle = ({ id, content, clickDelet, to }) => {
+export const MyselftArticle = ({ id, content, clickDelet, to, src, title }) => {
   return (
     <>
       <ArticleBox id={id}>
@@ -208,7 +206,11 @@ export const MyselftArticle = ({ id, content, clickDelet, to }) => {
             </Goto>
           </ArticleOption>
         </ArticleOption>
-        <ArticleContent style={{ height: "200px" }}>
+        <ArticleImgArea>
+          <ArticleImg src={src} />
+        </ArticleImgArea>
+        <ArticleTitle>{title.substring(0, 30)}</ArticleTitle>
+        <ArticleContent>
           <div dangerouslySetInnerHTML={{ __html: content }}></div>
         </ArticleContent>
       </ArticleBox>

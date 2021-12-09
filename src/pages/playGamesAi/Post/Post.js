@@ -1,9 +1,7 @@
 import React, { useState, Component, useEffect } from "react";
 import styled from "styled-components";
 import { MainArea, PageTitle } from "../../../global/editArticle";
-import useHandleArticle from "../../../global/useHandleArticle";
 import { LoadingBox } from "../../../global/Loading";
-import { getDay } from "../../../global/API";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -11,26 +9,7 @@ import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
-const data = [
-  {
-    crawler_No: 14129,
-    crawler_Web: "digit",
-    crawler_Cate: "",
-    crawler_Url:
-      "https://www.digit.in/news/gaming/garena-free-fire-x-money-heist-event-gives-players-the-chance-to-earn-exclusive-sports-car-skin-62153.html",
-    crawler_Title:
-      "Garena Free Fire x Money Heist event gives players the chance to earn exclusive sports car skin",
-    crawler_Content:
-      "Garena Free Fire has partnered with the popular Netflix TV show Money Heist to offer players the chance to earn various in-game items. This includes skins for various in-game items. Players can unlock these via banknotes that they can earn by completing various in-game daily challenges. Ready to raid? Complete the daily challenges in-game now to get banknotes and exchange the banknotes exciting Free Fire x Money Heist Collaboration rewards such as the exclusive Free Fire x Money Heist Sports Car!#FreeFirexLCDP5 #FreeFire #IndiaKaBattleRoyale #Booyah pic.twitter.com/HiQNr0dQSp— Free Fire India Official (@IndiaFreeFire) December 5, 2021Garena Free Fire x Money Heist collaboration: DetailsThe banknotes that players will earn by completing daily missions can be used to unlock the various rewards. The highlight is the exclusive Free Fire x Money Heist Sports Car. This event will go on till December 14. So players have another week to earn Banknotes. Aside from this, players can also earn additional Money Heist themed items in the Reload Target Down event. The rewards include the Gold Vault Gloo Wall skin, Bag O’ Cash backpack and the Red Robster skin for the Vector SMG. This event will end on December 12. Sight locked and ready to fire! More Money Heist items to be won in the Reload Target Down event including the Gold Vault Gloo Wall skin and the Red Robster Vector gun skin!Collect them all now before the event ends on the 12th December 2021.#FreeFire #IndiaKaBattleRoyale pic.twitter.com/szV4NgRP2w— Free Fire India Official (@IndiaFreeFire) December 6, 2021Garena Free Fire was recently updated with the New Age patch that rebalanced some key in-game characters. The notable change was to Chrono, who saw a considerable nerf to his ability. To recall, Chrono comes with an active ability that creates a force field around the user. Called Time Warp, this lets players fire out from inside the field, while any attack would be absorbed for a limited time. After the update, players on the inside of the force field will no longer be able to fire through the shield. To counter this, the HP of the shield has been increased to make it more durable.Also Read: Garena Free Fire Nerfs Abilities Of Cristiano Ronaldo-Based Character, Chrono",
-    crawler_PicUrl:
-      "https://static.digit.in/default/418f6f4d3229b587774161d9a4b93746db9419cd.jpeg",
-    crawler_Keyword: "",
-    crawler_Date: "2021-12-07",
-    crawler_Time: "23:02:00",
-  },
-];
-
-// 標題、圖片、內容、作者、
+import { addArticleApi } from "../../../global/API";
 
 export const ArticleArea = styled.div`
   width: 100%;
@@ -44,6 +23,7 @@ const Box = styled.div`
   border: 1px solid black;
   padding: 0 10px 20px 10px;
   margin-bottom: 20px;
+  height: 400px;
 `;
 
 const ClassificationSelect = styled.select`
@@ -263,10 +243,11 @@ const EditorConvertToHTML = ({ html, editorState, setEditorState }) => {
 };
 
 export default function Post() {
-  const [articleTitle, setArticleTitle] = useState(); // undefined
+  const [articleTitle, setArticleTitle] = useState("");
 
   const [editorState, setEditorState] = useState(); // undefined
 
+  // eslint-disable-next-line no-unused-vars
   const [editArticleContent, setEditArticleContent] = useState("");
 
   const [articleClassification, setArticleClassification] = useState("");
@@ -275,9 +256,19 @@ export default function Post() {
 
   const [selectedImage, setSelectedImage] = useState();
 
+  const [baes64Code, setBaes64Code] = useState("");
+
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);
+      var file = e.target.files[0];
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        let image = e.target.result;
+        setBaes64Code(image);
+        console.log(image);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -285,10 +276,6 @@ export default function Post() {
   const removeSelectedImage = () => {
     setSelectedImage();
   };
-
-  function handleTitle(e) {
-    setArticleTitle(e.target.value);
-  }
 
   useEffect(() => {
     if (editorState === undefined) {
@@ -308,9 +295,47 @@ export default function Post() {
       {/* <LoadingBox/> */}
       <MainArea>
         <PageTitle>編輯文章</PageTitle>
-        <EditTitle>請輸入標題 :</EditTitle>
-        <EditTitleInput value={articleTitle} onChange={handleTitle} />
-        <EditTitle>請放入圖片 :</EditTitle>
+        <ButtonArea>
+          <div>
+            <EditTitle>分類 :</EditTitle>
+            <ClassificationSelect
+              value={articleClassification}
+              onChange={(e) => {
+                setArticleClassification(e.target.value);
+              }}
+            >
+              <option value="">請選擇分類</option>
+              <option value="GameInformation">Game Information</option>
+              <option value="Vehicles">Vehicles</option>
+              <option value="Sports">Sports</option>
+            </ClassificationSelect>
+          </div>
+          <div>
+            <EditTitle>作者 :</EditTitle>
+            <ClassificationSelect
+              value={articleAuthor}
+              onChange={(e) => {
+                setArticleAuthor(e.target.value);
+              }}
+            >
+              <option value="">請選擇作者</option>
+              <option value="使用者01">使用者01</option>
+              <option value="使用者02">使用者02</option>
+              <option value="使用者03">使用者03</option>
+              <option value="使用者04">使用者04</option>
+            </ClassificationSelect>
+          </div>
+        </ButtonArea>
+        <EditTitle>標題 :</EditTitle>
+        <EditTitleInput
+          placeholder="請輸入"
+          value={articleTitle}
+          type="text"
+          onChange={(e) => {
+            setArticleTitle(e.target.value);
+          }}
+        />
+        <EditTitle>封面 :</EditTitle>
         <input
           accept="image/gif,image/jpeg,image/jpg,image/png"
           type="file"
@@ -320,56 +345,35 @@ export default function Post() {
           <>
             <PreviewImgArea>
               <PreviewImg
-                src={URL.createObjectURL(selectedImage)}
+                src={
+                  selectedImage === undefined
+                    ? baes64Code
+                    : URL.createObjectURL(selectedImage)
+                }
                 alt="Thumb"
               />
             </PreviewImgArea>
             <button onClick={removeSelectedImage}>刪除該照片</button>
           </>
         )}
-
-        <EditTitle>請輸入內文 :</EditTitle>
+        {/* <PreviewImg src={baes64Code} alt="Thumb" /> */}
+        <EditTitle>內文 :</EditTitle>
         <EditorConvertToHTML
           html={editArticleContent}
           editorState={editorState}
           setEditorState={setEditorState}
-          setEditArticleContent={setEditArticleContent}
         />
 
-        <ButtonArea>
-          <div>
-            <EditTitle>請輸入分類 :</EditTitle>
-            <ClassificationSelect
-              value={articleClassification}
-              onChange={(e) => {
-                setArticleClassification(e.target.value);
-              }}
-            >
-              <option value="">分類</option>
-              <option value="GameInformation">Game Information</option>
-              <option value="Vehicles">Vehicles</option>
-              <option value="Sports">Sports</option>
-            </ClassificationSelect>
-          </div>
-          <div>
-            <EditTitle>請輸入作者 :</EditTitle>
-            <ClassificationSelect
-              value={articleAuthor}
-              onChange={(e) => {
-                setArticleAuthor(e.target.value);
-              }}
-            >
-              <option value="">作者</option>
-              <option value="使用者01">使用者01</option>
-              <option value="使用者02">使用者02</option>
-              <option value="使用者03">使用者03</option>
-              <option value="使用者04">使用者04</option>
-            </ClassificationSelect>
-          </div>
-        </ButtonArea>
         <ButtonArea style={{ justifyContent: "flex-end", marginTop: "50px" }}>
           <ContentButton
             onClick={() => {
+              addArticleApi(
+                articleTitle,
+                baes64Code,
+                draftToHtml(convertToRaw(editorState.getCurrentContent())),
+                articleClassification,
+                articleAuthor
+              );
               console.log(
                 "標題",
                 articleTitle,
@@ -380,9 +384,10 @@ export default function Post() {
                 "分類",
                 articleClassification,
                 "作者",
-                articleAuthor,
-                "日期",
-                getDay(0)
+                articleAuthor
+                // 新增 formData
+                // const formData = new FormData();
+                // formData.append('image', e.target.files[0]);
               );
             }}
           >

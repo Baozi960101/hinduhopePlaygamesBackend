@@ -126,7 +126,6 @@ export default function Sidebar() {
   const [playGamesItem, setPlayGamesItem] = useState(false);
   const [hinduHopeItem, setHinduHopeItem] = useState(false);
 
-  const [playEditArticle, setPlayEditArticle] = useState(false);
   const [hinduEditArticle, setHinduEditArticle] = useState(false);
 
   const { setUser } = useContext(AuthContext);
@@ -139,7 +138,6 @@ export default function Sidebar() {
   function handlePlayItem() {
     if (playGamesItem) {
       setPlayGamesItem(false);
-      setPlayEditArticle(false);
     } else {
       setPlayGamesItem(true);
     }
@@ -152,10 +150,6 @@ export default function Sidebar() {
     } else {
       setHinduHopeItem(true);
     }
-  }
-
-  function handlePlayEdit() {
-    setPlayEditArticle(!playEditArticle);
   }
 
   function handleHinduEdit() {
@@ -171,9 +165,6 @@ export default function Sidebar() {
             <Logo alt="Play Games" src={hinduHopeLongLogo} />
           </SidebarLogo>
         </Goto>
-        {/* <Goto to="/search">
-          <ListTitle>查詢文章</ListTitle>
-        </Goto> */}
         <ListMainTitle onClick={handlePlayItem}>
           Play Games
           <DownImg src={down} />
@@ -181,49 +172,9 @@ export default function Sidebar() {
         <Goto to="/playgame/post">
           <ListTitle $close={playGamesItem}>發表文章</ListTitle>
         </Goto>
-        <ListTitle $close={playGamesItem} onClick={handlePlayEdit}>
-          編輯文章
-          <DownImg src={down} />
-        </ListTitle>
-        {/* <Goto to="/edithome">
-          <ListSubTitle $close={playEditArticle}>Home</ListSubTitle>
-        </Goto> */}
-        <Goto to="/playgame/editgameinformation">
-          <ListSubTitle $close={playEditArticle}>Game Information</ListSubTitle>
+        <Goto to="/playgame/search">
+          <ListTitle $close={playGamesItem}>查詢文章</ListTitle>
         </Goto>
-        <Goto to="/playgame/editvehicles">
-          <ListSubTitle $close={playEditArticle}>Vehicles</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/editsports">
-          <ListSubTitle $close={playEditArticle}>Sports</ListSubTitle>
-        </Goto>
-        {/* <Goto to="/playgame/editrmg">
-          <ListSubTitle $close={playEditArticle}>RMG</ListSubTitle> 
-        </Goto>
-        <Goto to="/playgame/editmobile">
-          <ListSubTitle $close={playEditArticle}>手機遊戲</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/editesports">
-          <ListSubTitle $close={playEditArticle}>電子競技遊戲</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/editcard">
-          <ListSubTitle $close={playEditArticle}>紙牌遊戲</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/editraiders">
-          <ListSubTitle $close={playEditArticle}>競技攻略</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/editcar">
-          <ListSubTitle $close={playEditArticle}>汽車資訊</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/editcricket">
-          <ListSubTitle $close={playEditArticle}>板球</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/edittennis">
-          <ListSubTitle $close={playEditArticle}>網球</ListSubTitle>
-        </Goto>
-        <Goto to="/playgame/editbadminton">
-          <ListSubTitle $close={playEditArticle}>羽毛球</ListSubTitle>
-        </Goto> */}
         <ListMainTitle onClick={handleHinduItem}>
           HinduHope
           <DownImg src={down} />

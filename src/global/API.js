@@ -63,3 +63,20 @@ export const FirstCheckUser = (token) => {
     },
   });
 };
+
+export function addArticleApi(title, image, content, classification, author) {
+  let data = new FormData();
+  data.append("title", title);
+  data.append("image", image);
+  // formData.append('image', e.target.files[0]);
+  data.append("content", content);
+  data.append("classification", classification);
+  data.append("author", author);
+  return fetch(`http://localhost:3000/#/`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+    body: data,
+  });
+}

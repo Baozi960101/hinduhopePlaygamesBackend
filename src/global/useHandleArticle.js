@@ -101,6 +101,7 @@ export default function useHandleArticle() {
       alert("目前在第一頁囉");
       return;
     }
+    setLoad(true);
     const res = await fetch(prevPage);
     const data = await res.json();
     setPost(data.data);
@@ -109,6 +110,7 @@ export default function useHandleArticle() {
     setNextPage(data.links.next);
     setNowLastPage(data.meta.last_page);
     scrollToTop();
+    setLoad(false);
   }
 
   async function ChangeNextPage() {
@@ -116,6 +118,7 @@ export default function useHandleArticle() {
       alert("最後一頁囉");
       return;
     }
+    setLoad(true);
     const res = await fetch(nextPage);
     const data = await res.json();
     setPost(data.data);
@@ -124,6 +127,7 @@ export default function useHandleArticle() {
     setNextPage(data.links.next);
     setNowLastPage(data.meta.last_page);
     scrollToTop();
+    setLoad(false);
   }
 
   function deletArticle(id) {

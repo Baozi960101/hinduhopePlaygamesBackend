@@ -12,23 +12,13 @@ import { scrollToTop } from "../../global/scroll";
 import Login from "../../pages/Login";
 import Home from "../../pages/Home";
 import HomeArticle from "../../pages/playGamesAi/edit/HomeArticle";
-import Mobile from "../../pages/playGamesAi/edit/Mobile";
-import Esports from "../../pages/playGamesAi/edit/Esports";
-import Rmg from "../../pages/playGamesAi/edit/Rmg";
-import Card from "../../pages/playGamesAi/edit/Card";
-import Raiders from "../../pages/playGamesAi/edit/Raiders";
-import Car from "../../pages/playGamesAi/edit/Car";
-import Cricket from "../../pages/playGamesAi/edit/Cricket";
-import Tennis from "../../pages/playGamesAi/edit/Tennis";
-import Badminton from "../../pages/playGamesAi/edit/Badminton/Badminton";
 import SiderBar from "../Sidebar";
 import Post from "../../pages/playGamesAi/Post";
 import styled from "styled-components";
 
 import PlaySingleArticle from "../../pages/playGamesAi/edit/SingleArticle/SingleArticle";
-import GameInformation from "../../pages/playGamesAi/edit/GameInformation";
-import Vehicles from "../../pages/playGamesAi/edit/Vehicles";
-import Sports from "../../pages/playGamesAi/edit/Sports";
+
+import Search from "../../pages/playGamesAi/Search";
 
 import HinduSingleArticle from "../../pages/hinduHope/edit/SingleArticle";
 import HinduPost from "../../pages/hinduHope/Post/Post";
@@ -108,44 +98,8 @@ export default function App() {
               <Route exact path="/playgame/post">
                 <JudgeUser component={<Post />} />
               </Route>
-              <Route exact path="/playgame/editgameinformation">
-                <JudgeUser component={<GameInformation />} />
-              </Route>
-              <Route exact path="/playgame/editvehicles">
-                <JudgeUser component={<Vehicles />} />
-              </Route>
-              <Route exact path="/playgame/editsports">
-                <JudgeUser component={<Sports />} />
-              </Route>
-              <Route exact path="/playgame/edithome">
-                <JudgeUser component={<HomeArticle />} />
-              </Route>
-              <Route exact path="/playgame/editrmg">
-                <JudgeUser component={<Rmg />} />
-              </Route>
-              <Route exact path="/playgame/editmobile">
-                <JudgeUser component={<Mobile />} />
-              </Route>
-              <Route exact path="/playgame/editesports">
-                <JudgeUser component={<Esports />} />
-              </Route>
-              <Route exact path="/playgame/editcard">
-                <JudgeUser component={<Card />} />
-              </Route>
-              <Route exact path="/playgame/editraiders">
-                <JudgeUser component={<Raiders />} />
-              </Route>
-              <Route exact path="/playgame/editcar">
-                <JudgeUser component={<Car />} />
-              </Route>
-              <Route exact path="/playgame/editcricket">
-                <JudgeUser component={<Cricket />} />
-              </Route>
-              <Route exact path="/playgame/edittennis">
-                <JudgeUser component={<Tennis />} />
-              </Route>
-              <Route exact path="/playgame/editbadminton">
-                <JudgeUser component={<Badminton />} />
+              <Route exact path="/playgame/search">
+                <JudgeUser component={<Search />} />
               </Route>
               <Route exact path="/hinduhope/post">
                 <JudgeUser component={<HinduPost />} />
