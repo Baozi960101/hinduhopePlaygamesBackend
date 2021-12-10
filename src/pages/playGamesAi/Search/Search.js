@@ -157,7 +157,7 @@ export default function Search() {
                   <MyselftArticle
                     key={data.crawler_No}
                     id={data.crawler_No}
-                    to={`/${data.crawler_No}`}
+                    to={`/playgame/${data.crawler_No}`}
                     src={data.crawler_PicUrl}
                     title={data.crawler_Title}
                     content={data.crawler_Content}

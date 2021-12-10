@@ -164,10 +164,13 @@ export default function Author() {
         <PageTitle>查詢作者</PageTitle>
         <AuthorTitle>
           <div>作者名</div>
-          <div>編輯</div>
+          <div>刪除</div>
         </AuthorTitle>
-        <AuthorContent name="作者名 01" />
-        <AuthorContent name="作者名 02" />
+        <AuthorContent name="John" />
+        <AuthorContent name="Tim" />
+        <AuthorContent name="Hank" />
+        <AuthorContent name="Ray" />
+        <AuthorContent name="Eric" />
         <AuthorAddButtomBox>
           <AuthorAddButtom onClick={handleAdd}>新增</AuthorAddButtom>
         </AuthorAddButtomBox>

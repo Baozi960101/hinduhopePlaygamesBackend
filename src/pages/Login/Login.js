@@ -228,7 +228,11 @@ function loginClick(account, password, loginGO) {
     Swal.fire("請填入密碼");
     return;
   }
-  loginGO();
+  if (password === "xxxx123" && account === "xxxx123") {
+    loginGO();
+    return;
+  }
+  Swal.fire("密碼錯誤");
 }
 
 export default function Login() {

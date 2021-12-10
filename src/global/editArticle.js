@@ -201,7 +201,7 @@ export const MyselftArticle = ({ id, content, clickDelet, to, src, title }) => {
         <ArticleOption>
           <ArticleOption>
             <ArticleOptionImg src={cross} onClick={clickDelet} />
-            <Goto to={`/playgame${to}`}>
+            <Goto to={to}>
               <ArticleOptionImg src={edit} />
             </Goto>
           </ArticleOption>
