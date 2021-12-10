@@ -57,7 +57,6 @@ const myself = {
 
 export default function FinancialNews() {
   const {
-    FetchDate,
     post,
     page,
     ChangeNextPage,

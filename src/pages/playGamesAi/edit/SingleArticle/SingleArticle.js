@@ -368,7 +368,7 @@ export default function SingleArticle() {
             <button onClick={removeSelectedImage}>刪除該照片</button>
           </>
         )}
-        <PreviewImg src={baes64Code} alt="Thumb" />
+        {/* <PreviewImg src={baes64Code} alt="Thumb" /> */}
         <EditTitle>請輸入內文 :</EditTitle>
         <EditorConvertToHTML
           html={editArticleContent}

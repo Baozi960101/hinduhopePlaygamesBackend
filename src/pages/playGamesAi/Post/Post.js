@@ -350,7 +350,7 @@ export default function Post() {
                     ? baes64Code
                     : URL.createObjectURL(selectedImage)
                 }
-                alt="Thumb"
+                alt=""
               />
             </PreviewImgArea>
             <button onClick={removeSelectedImage}>刪除該照片</button>

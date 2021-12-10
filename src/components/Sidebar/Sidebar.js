@@ -100,33 +100,9 @@ const ListTitle = styled.div`
   }
 `;
 
-const ListSubTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 0px;
-  overflow: hidden;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  border-radius: 10px;
-  padding-left: 60px;
-  color: black;
-  transition: height 0.3s ease-in-out;
-
-  ${(props) => props.$close && `height: 40px;`}
-
-  :hover {
-    background-color: #f2f7ff;
-  }
-`;
-
 export default function Sidebar() {
   const [playGamesItem, setPlayGamesItem] = useState(false);
   const [hinduHopeItem, setHinduHopeItem] = useState(false);
-
-  const [hinduEditArticle, setHinduEditArticle] = useState(false);
 
   const { setUser } = useContext(AuthContext);
 
@@ -146,14 +122,9 @@ export default function Sidebar() {
   function handleHinduItem() {
     if (hinduHopeItem) {
       setHinduHopeItem(false);
-      setHinduEditArticle(false);
     } else {
       setHinduHopeItem(true);
     }
-  }
-
-  function handleHinduEdit() {
-    setHinduEditArticle(!hinduEditArticle);
   }
 
   return (
@@ -175,6 +146,9 @@ export default function Sidebar() {
         <Goto to="/playgame/search">
           <ListTitle $close={playGamesItem}>查詢文章</ListTitle>
         </Goto>
+        <Goto to="/playgame/author">
+          <ListTitle $close={playGamesItem}>查詢作者</ListTitle>
+        </Goto>
         <ListMainTitle onClick={handleHinduItem}>
           HinduHope
           <DownImg src={down} />
@@ -182,21 +156,11 @@ export default function Sidebar() {
         <Goto to="/hinduhope/post">
           <ListTitle $close={hinduHopeItem}>發表文章</ListTitle>
         </Goto>
-        <ListTitle $close={hinduHopeItem} onClick={handleHinduEdit}>
-          編輯文章
-          <DownImg src={down} />
-        </ListTitle>
-        <Goto to="/hinduhope/editboutiques">
-          <ListSubTitle $close={hinduEditArticle}>Boutiques</ListSubTitle>
+        <Goto to="/hinduhope/search">
+          <ListTitle $close={hinduHopeItem}>查詢文章</ListTitle>
         </Goto>
-        <Goto to="/hinduhope/editvehicles">
-          <ListSubTitle $close={hinduEditArticle}>Vehicles</ListSubTitle>
-        </Goto>
-        <Goto to="/hinduhope/editworldnews">
-          <ListSubTitle $close={hinduEditArticle}>World News</ListSubTitle>
-        </Goto>
-        <Goto to="/hinduhope/editfinancialnews">
-          <ListSubTitle $close={hinduEditArticle}>Financial News</ListSubTitle>
+        <Goto to="/hinduhope/author">
+          <ListTitle $close={hinduHopeItem}>查詢作者</ListTitle>
         </Goto>
         <Goto to="/script">
           <ListMainTitle>自動撰文</ListMainTitle>

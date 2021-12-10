@@ -18,14 +18,13 @@ import styled from "styled-components";
 
 import PlaySingleArticle from "../../pages/playGamesAi/edit/SingleArticle/SingleArticle";
 
-import Search from "../../pages/playGamesAi/Search";
+import SearchPlay from "../../pages/playGamesAi/Search";
+import SearchHindu from "../../pages/hinduHope/Search/Search";
+import AuthorPlay from "../../pages/playGamesAi/Author";
+import AuthorHindu from "../../pages/hinduHope/Author";
 
 import HinduSingleArticle from "../../pages/hinduHope/edit/SingleArticle";
 import HinduPost from "../../pages/hinduHope/Post/Post";
-import Boutiques from "../../pages/hinduHope/edit/Boutiques/Boutiques";
-import FinancialNews from "../../pages/hinduHope/edit/FinancialNews/FinancialNews";
-import WorldNews from "../../pages/hinduHope/edit/WorldNews/WorldNews";
-import HinduVehicles from "../../pages/hinduHope/edit/Vehicles/Vehicles";
 
 import Script from "../../pages/Script/script";
 
@@ -99,22 +98,19 @@ export default function App() {
                 <JudgeUser component={<Post />} />
               </Route>
               <Route exact path="/playgame/search">
-                <JudgeUser component={<Search />} />
+                <JudgeUser component={<SearchPlay />} />
+              </Route>
+              <Route exact path="/playgame/author">
+                <JudgeUser component={<AuthorPlay />} />
               </Route>
               <Route exact path="/hinduhope/post">
                 <JudgeUser component={<HinduPost />} />
               </Route>
-              <Route exact path="/hinduhope/editboutiques">
-                <JudgeUser component={<Boutiques />} />
+              <Route exact path="/hinduhope/search">
+                <JudgeUser component={<SearchHindu />} />
               </Route>
-              <Route exact path="/hinduhope/editfinancialnews">
-                <JudgeUser component={<FinancialNews />} />
-              </Route>
-              <Route exact path="/hinduhope/editvehicles">
-                <JudgeUser component={<HinduVehicles />} />
-              </Route>
-              <Route exact path="/hinduhope/editworldnews">
-                <JudgeUser component={<WorldNews />} />
+              <Route exact path="/hinduhope/author">
+                <JudgeUser component={<AuthorHindu />} />
               </Route>
               <Route exact path="/script">
                 <JudgeUser component={<Script />} />
