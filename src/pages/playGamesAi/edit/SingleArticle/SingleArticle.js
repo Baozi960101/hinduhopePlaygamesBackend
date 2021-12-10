@@ -21,14 +21,14 @@ const Box = styled.div`
 
 const alone = {
   crawler_No: 14129,
-  crawler_Web: "digit/使用者01",
+  crawler_Web: "digit",
   crawler_Cate: "",
   crawler_Url:
     "https://www.digit.in/news/gaming/garena-free-fire-x-money-heist-event-gives-players-the-chance-to-earn-exclusive-sports-car-skin-62153.html",
   crawler_Title: "我是大哥",
   crawler_Content: `<h4><span style="font-size: 14px;"><strong>ewgewggewgew</strong></span></h4>
   <h4>你好拉</h4>`,
-  crawler_PicUrl: `blob:http://localhost:3000/76bd0716-1fa5-489f-a993-533744b50af8`,
+  crawler_PicUrl: `https://static.digit.in/default/7ef1270db48959b334800ccea8b791d3abf18231.jpeg`,
   crawler_Keyword: "GameInformation",
   crawler_Date: "2021-12-09",
   crawler_Time: "23:02:00",
@@ -258,25 +258,19 @@ export default function SingleArticle() {
 
   const [editArticleContent, setEditArticleContent] = useState("");
 
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage, setSelectedImage] = useState("");
+
+  // eslint-disable-next-line no-unused-vars
+  const [selectedUploadImage, setSelectedUploadImage] = useState();
 
   const [articleClassification, setArticleClassification] = useState("");
 
   const [articleAuthor, setArticleAuthor] = useState("");
 
-  const [baes64Code, setBaes64Code] = useState("");
-
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
-      var file = e.target.files[0];
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        let image = e.target.result;
-        setBaes64Code(image);
-        console.log(image);
-      };
-      reader.readAsDataURL(file);
+      setSelectedImage(URL.createObjectURL(e.target.files[0]));
+      setSelectedUploadImage(e.target.files[0]);
     }
   };
 
@@ -287,6 +281,10 @@ export default function SingleArticle() {
 
   useEffect(() => {
     setArticleTitle(alone.crawler_Title);
+    setSelectedImage(alone.crawler_PicUrl);
+    //預覽
+    setSelectedUploadImage(alone.crawler_PicUrl);
+    //上傳
     setEditArticleContent(alone.crawler_Content);
     window.addEventListener("beforeunload", function (e) {
       var confirmationMessage = "你還沒有完成你的文章，就這樣離開了嗎？";
@@ -357,18 +355,14 @@ export default function SingleArticle() {
           <>
             <PreviewImgArea>
               <PreviewImg
-                src={
-                  selectedImage === undefined
-                    ? baes64Code
-                    : URL.createObjectURL(selectedImage)
-                }
+                // src={URL.createObjectURL(selectedImage)}
+                src={selectedImage}
                 alt="Thumb"
               />
             </PreviewImgArea>
             <button onClick={removeSelectedImage}>刪除該照片</button>
           </>
         )}
-        {/* <PreviewImg src={baes64Code} alt="Thumb" /> */}
         <EditTitle>請輸入內文 :</EditTitle>
         <EditorConvertToHTML
           html={editArticleContent}
@@ -380,7 +374,7 @@ export default function SingleArticle() {
             onClick={() => {
               addArticleApi(
                 articleTitle,
-                baes64Code,
+                selectedImage,
                 draftToHtml(convertToRaw(editorState.getCurrentContent())),
                 articleClassification,
                 articleAuthor

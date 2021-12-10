@@ -65,9 +65,9 @@ export const FirstCheckUser = (token) => {
 };
 
 export function addArticleApi(title, image, content, classification, author) {
-  let data = new FormData();
+  let data = new URLSearchParams();
   data.append("title", title);
-  data.append("image", image);
+  data.append("file", image);
   // formData.append('image', e.target.files[0]);
   data.append("content", content);
   data.append("classification", classification);

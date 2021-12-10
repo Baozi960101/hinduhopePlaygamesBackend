@@ -256,19 +256,9 @@ export default function Post() {
 
   const [selectedImage, setSelectedImage] = useState();
 
-  const [baes64Code, setBaes64Code] = useState("");
-
   const imageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedImage(e.target.files[0]);
-      var file = e.target.files[0];
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        let image = e.target.result;
-        setBaes64Code(image);
-        console.log(image);
-      };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -344,14 +334,7 @@ export default function Post() {
         {selectedImage && (
           <>
             <PreviewImgArea>
-              <PreviewImg
-                src={
-                  selectedImage === undefined
-                    ? baes64Code
-                    : URL.createObjectURL(selectedImage)
-                }
-                alt=""
-              />
+              <PreviewImg src={URL.createObjectURL(selectedImage)} alt="" />
             </PreviewImgArea>
             <button onClick={removeSelectedImage}>刪除該照片</button>
           </>
@@ -369,7 +352,7 @@ export default function Post() {
             onClick={() => {
               addArticleApi(
                 articleTitle,
-                baes64Code,
+                selectedImage,
                 draftToHtml(convertToRaw(editorState.getCurrentContent())),
                 articleClassification,
                 articleAuthor
